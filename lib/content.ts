@@ -12,7 +12,6 @@ function getDir(type: ContentType) {
 
 function resolveFile(dir: string, slug: string, locale: string) {
   const localized = path.join(dir, `${slug}.${locale}.mdx`);
-
   const base = path.join(dir, `${slug}.mdx`);
 
   if (locale !== 'en' && fs.existsSync(localized)) {
@@ -24,6 +23,11 @@ function resolveFile(dir: string, slug: string, locale: string) {
   }
 
   throw new Error(`Content not found: ${slug}`);
+}
+
+function calculateReadingTime(text: string) {
+  const words = text.split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 200));
 }
 
 export function getSlugs(type: ContentType) {
@@ -42,24 +46,27 @@ export function getEntry(
   locale: string,
 ): ContentEntry {
   const dir = getDir(type);
-
   const file = resolveFile(dir, slug, locale);
 
   const source = fs.readFileSync(file, 'utf8');
 
   const { data, content } = matter(source);
 
+  const normalizedDate =
+    data.date instanceof Date ? data.date.toISOString() : data.date;
+
   return {
     slug,
     type,
-    frontmatter: data,
+    frontmatter: {
+      ...data,
+      date: normalizedDate,
+    },
     content,
+    readingTime: calculateReadingTime(content),
   };
 }
 
-export function getAllEntries(
-  type: ContentType,
-  locale: string,
-): ContentEntry[] {
+export function getAllEntries(type: ContentType, locale: string) {
   return getSlugs(type).map((slug) => getEntry(type, slug, locale));
 }

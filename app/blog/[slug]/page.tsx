@@ -24,9 +24,9 @@ export default async function BlogPostPage({
     <article className="container-main prose dark:prose-invert">
       <h1>{post.frontmatter.title}</h1>
 
-      {post.frontmatter.date && (
-        <p className="opacity-70">{post.frontmatter.date.toString()}</p>
-      )}
+      <p className="opacity-70">
+        {post.frontmatter.date} | {post.readingTime} min read
+      </p>
 
       {post.content
         .split('\n')

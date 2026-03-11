@@ -1,7 +1,7 @@
 import { generateRSS } from '../../../lib/rss';
 
 export async function GET() {
-  const xml = generateRSS('https://cassiosousa.dev');
+  const xml = generateRSS('https://cassiossousa.github.io');
 
   return new Response(xml, {
     headers: {
