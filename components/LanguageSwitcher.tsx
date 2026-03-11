@@ -1,15 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Locale } from '../i18n/config';
 
 export default function LanguageSwitcher() {
-  const [current, setCurrent] = useState<Locale>();
-
-  useEffect(() => {
-    const lang = document.documentElement.lang as Locale;
-    setCurrent(lang);
-  }, []);
+  const [current, setCurrent] = useState<Locale>(() => {
+    if (typeof window !== 'undefined') {
+      return document.documentElement.lang as Locale;
+    }
+    return 'en';
+  });
 
   function change(lang: string) {
     const url = new URL(window.location.href);
