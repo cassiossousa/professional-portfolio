@@ -21,7 +21,7 @@ export default async function ProjectsPage() {
               {project.frontmatter.title}
             </Link>
 
-            <p>{project.frontmatter.description}</p>
+            <p>{project.content}</p>
           </article>
         ))}
       </div>
