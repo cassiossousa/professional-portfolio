@@ -1,29 +1,39 @@
-import { MDXRemote } from 'next-mdx-remote/rsc';
-
 import { cookies } from 'next/headers';
-import { getEntry, getSlugs } from '../../../lib/content';
+import { notFound } from 'next/navigation';
 
-export function generateStaticParams() {
-  return getSlugs('blog').map((slug) => ({
-    slug,
-  }));
-}
+import { getEntry } from '../../../lib/content';
 
 export default async function BlogPostPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
+
   const locale = (await cookies()).get('lang')?.value ?? 'en';
-  const post = getEntry('blog', params.slug, locale);
+
+  let post;
+
+  try {
+    post = getEntry('blog', slug, locale);
+  } catch {
+    notFound();
+  }
 
   return (
     <article className="container-main prose dark:prose-invert">
       <h1>{post.frontmatter.title}</h1>
+
       {post.frontmatter.date && (
-        <p className="opacity-70">{post.frontmatter.date}</p>
+        <p className="opacity-70">{post.frontmatter.date.toString()}</p>
       )}
-      <MDXRemote source={post.content} />
+
+      {post.content
+        .split('\n')
+        .filter((p) => p.trim())
+        .map((p, i) => (
+          <p key={i}>{p}</p>
+        ))}
     </article>
   );
 }

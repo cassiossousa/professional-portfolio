@@ -7,13 +7,12 @@ import { ContentEntry } from '../../types/content';
 export default async function ExperiencePage() {
   const cookieStore = await cookies();
   const locale = cookieStore.get('lang')?.value ?? 'en';
-  const roles: ContentEntry[] = getAllEntries('experience', locale);
+  const roles: ContentEntry[] = await getAllEntries('experience', locale);
 
   const sortedRoles = roles.sort((a, b) => {
-    const aStart = a.frontmatter.start ?? '';
-    const bStart = b.frontmatter.start ?? '';
-
-    return bStart.localeCompare(aStart);
+    const aStart = new Date(a.frontmatter.start ?? '');
+    const bStart = new Date(b.frontmatter.start ?? '');
+    return bStart.getTime() - aStart.getTime();
   });
 
   return (
@@ -30,7 +29,7 @@ export default async function ExperiencePage() {
             end,
           } = role.frontmatter;
 
-          const period = end ? `${start} – ${end}` : `${start} – Present`;
+          const period = end ? `${start} - ${end}` : `${start} - Present`;
 
           return (
             <article key={role.slug} className="border-b pb-6">
@@ -45,7 +44,7 @@ export default async function ExperiencePage() {
 
               <p className="text-sm opacity-80 mt-1">
                 {company}
-                {location && ` • ${location}`}
+                {location && ` | ${location}`}
               </p>
 
               <p className="text-sm opacity-60 mt-1">{period}</p>

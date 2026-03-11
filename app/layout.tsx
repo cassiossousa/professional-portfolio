@@ -13,13 +13,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
-
   const locale = (cookieStore.get('lang')?.value ?? 'en') as Locale;
-
   const messages = await getDictionary(locale);
 
   return (
-    <html lang={locale}>
+    <html lang={locale} data-scroll-behavior="smooth">
       <body>
         <TranslationProvider messages={messages}>
           <Navbar />

@@ -1,41 +1,55 @@
 import { cookies } from 'next/headers';
-import { MDXRemote } from 'next-mdx-remote/rsc';
+import { notFound } from 'next/navigation';
 
 import { getEntry, getSlugs } from '../../../lib/content';
-import { ContentEntry } from '../../../types/content';
+import { renderMDX } from '../../../lib/mdx';
 
 export function generateStaticParams() {
-  return getSlugs('experience').map((slug) => ({
+  const slugs = getSlugs('experience');
+
+  return slugs.map((slug) => ({
     slug,
   }));
 }
 
-export default function ExperienceRolePage({
+export default async function ExperienceSlugPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const locale = cookies().get('lang')?.value ?? 'en';
+  const { slug } = await params;
 
-  const entry: ContentEntry = getEntry('experience', params.slug, locale);
+  const cookieStore = await cookies();
+  const locale = cookieStore.get('lang')?.value ?? 'en';
+
+  let entry;
+
+  try {
+    entry = getEntry('experience', slug, locale);
+  } catch {
+    notFound();
+  }
+
+  const MDXContent = await renderMDX(entry.content);
 
   const { role, company, location, start, end } = entry.frontmatter;
-
-  const period = end ? `${start} – ${end}` : `${start} – Present`;
+  const period =
+    start && end
+      ? `${start?.toString()} - ${end.toString()}`
+      : start
+        ? `${start?.toString()} - Present`
+        : '';
 
   return (
     <article className="container-main prose dark:prose-invert">
-      <h1>{role}</h1>
+      <header className="mb-10">
+        <h1>{role}</h1>
+        <p>{company}</p>
+        {location && <p>{location}</p>}
+        {period && <p>{period}</p>}
+      </header>
 
-      <p>
-        <strong>{company}</strong>
-
-        {location && ` • ${location}`}
-      </p>
-
-      <p>{period}</p>
-
-      <MDXRemote source={entry.content} />
+      <MDXContent />
     </article>
   );
 }

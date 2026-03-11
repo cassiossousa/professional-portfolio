@@ -6,7 +6,7 @@ import { getAllEntries } from '../../lib/content';
 
 export default async function ProjectsPage() {
   const locale = (await cookies()).get('lang')?.value ?? 'en';
-  const projects = getAllEntries('projects', locale);
+  const projects = await getAllEntries('projects', locale);
 
   return (
     <section className="container-main">

@@ -6,24 +6,34 @@ import { ContentEntry, ContentType } from '../types/content';
 
 const CONTENT_ROOT = path.join(process.cwd(), 'content');
 
-function resolveFile(type: ContentType, slug: string, locale: string) {
-  const dir = path.join(CONTENT_ROOT, type);
+function getDir(type: ContentType) {
+  return path.join(CONTENT_ROOT, type);
+}
 
+function resolveFile(dir: string, slug: string, locale: string) {
   const localized = path.join(dir, `${slug}.${locale}.mdx`);
 
-  const fallback = path.join(dir, `${slug}.en.mdx`);
+  const base = path.join(dir, `${slug}.mdx`);
 
-  if (fs.existsSync(localized)) return localized;
+  if (locale !== 'en' && fs.existsSync(localized)) {
+    return localized;
+  }
 
-  return fallback;
+  if (fs.existsSync(base)) {
+    return base;
+  }
+
+  throw new Error(`Content not found: ${slug}`);
 }
 
 export function getSlugs(type: ContentType) {
-  const dir = path.join(CONTENT_ROOT, type);
+  const dir = getDir(type);
 
-  const files = fs.readdirSync(dir);
-
-  return [...new Set(files.map((file) => file.split('.')[0]))];
+  return fs
+    .readdirSync(dir)
+    .filter((file) => file.endsWith('.mdx'))
+    .filter((file) => file.split('.').length === 2)
+    .map((file) => file.replace('.mdx', ''));
 }
 
 export function getEntry(
@@ -31,11 +41,13 @@ export function getEntry(
   slug: string,
   locale: string,
 ): ContentEntry {
-  const filePath = resolveFile(type, slug, locale);
+  const dir = getDir(type);
 
-  const source = fs.readFileSync(filePath, 'utf8');
+  const file = resolveFile(dir, slug, locale);
 
-  const { content, data } = matter(source);
+  const source = fs.readFileSync(file, 'utf8');
+
+  const { data, content } = matter(source);
 
   return {
     slug,
@@ -49,7 +61,5 @@ export function getAllEntries(
   type: ContentType,
   locale: string,
 ): ContentEntry[] {
-  const slugs = getSlugs(type);
-
-  return slugs.map((slug) => getEntry(type, slug, locale));
+  return getSlugs(type).map((slug) => getEntry(type, slug, locale));
 }

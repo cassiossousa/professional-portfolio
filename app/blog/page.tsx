@@ -5,7 +5,7 @@ import { getAllEntries } from '../../lib/content';
 
 export default async function BlogPage() {
   const locale = (await cookies()).get('lang')?.value ?? 'en';
-  const posts = getAllEntries('blog', locale);
+  const posts = await getAllEntries('blog', locale);
 
   return (
     <section className="container-main">

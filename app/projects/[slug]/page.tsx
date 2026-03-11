@@ -1,26 +1,35 @@
-import { MDXRemote } from 'next-mdx-remote/rsc';
-
 import { cookies } from 'next/headers';
-import { getEntry, getSlugs } from '../../../lib/content';
+import { notFound } from 'next/navigation';
 
-export function generateStaticParams() {
-  return getSlugs('projects').map((slug) => ({
-    slug,
-  }));
-}
+import { getEntry } from '../../../lib/content';
 
 export default async function ProjectPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
+
   const locale = (await cookies()).get('lang')?.value ?? 'en';
-  const project = getEntry('projects', params.slug, locale);
+
+  let project;
+
+  try {
+    project = getEntry('projects', slug, locale);
+  } catch {
+    notFound();
+  }
 
   return (
     <article className="container-main prose dark:prose-invert">
       <h1>{project.frontmatter.title}</h1>
-      <MDXRemote source={project.content} />
+
+      {project.content
+        .split('\n')
+        .filter((p) => p.trim())
+        .map((p, i) => (
+          <p key={i}>{p}</p>
+        ))}
     </article>
   );
 }

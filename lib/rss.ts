@@ -1,25 +1,31 @@
-import RSS from 'rss';
 import { getAllEntries } from './content';
 
-export function generateRSS(locale: string) {
-  const posts = getAllEntries('blog', locale);
+export function generateRSS(baseUrl: string) {
+  const posts = getAllEntries('blog', 'en');
 
-  const feed = new RSS({
-    title: 'Cássio Sousa Blog',
-    description: 'Engineering articles and insights',
-    site_url: 'https://yourdomain.com',
-    feed_url: 'https://yourdomain.com/rss.xml',
-    language: locale,
-  });
+  const items = posts
+    .map((post) => {
+      const url = `${baseUrl}/blog/${post.slug}`;
 
-  posts.forEach((post) => {
-    feed.item({
-      title: post.frontmatter.title ?? '',
-      description: post.frontmatter.description ?? '',
-      url: `https://yourdomain.com/blog/${post.slug}`,
-      date: post.frontmatter.date ?? '',
-    });
-  });
+      return `
+        <item>
+          <title>${post.frontmatter.title}</title>
+          <link>${url}</link>
+          <guid>${url}</guid>
+          <pubDate>${post.frontmatter.date}</pubDate>
+        </item>
+      `;
+    })
+    .join('\n');
 
-  return feed.xml();
+  return `
+  <rss version="2.0">
+    <channel>
+      <title>Cássio Sousa Blog</title>
+      <link>${baseUrl}</link>
+      <description>Engineering blog</description>
+      ${items}
+    </channel>
+  </rss>
+  `;
 }
