@@ -23,7 +23,7 @@ export default async function BlogPage() {
             {post.frontmatter.date && (
               <p className="opacity-70">{post.frontmatter.date}</p>
             )}
-            <p>{post.frontmatter.description}</p>
+            <p>{post.content}</p>
           </article>
         ))}
       </div>

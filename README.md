@@ -10,6 +10,7 @@ Professional portfolio and engineering blog.
 - Tailwind
 - Jest
 - GitHub Actions
+- Vercel
 
 ## Development
 
