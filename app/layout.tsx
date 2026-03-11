@@ -5,7 +5,27 @@ import { getDictionary } from '../i18n/dictionaries';
 import { TranslationProvider } from '../i18n/provider';
 import './globals.css';
 
+import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://professional-portfolio-mu-gray.vercel.app'),
+  title: {
+    default: 'Cássio Sousa — Software Engineer',
+    template: '%s | Cássio Sousa',
+  },
+  description: 'Software engineering portfolio, projects and technical blog.',
+  alternates: {
+    types: {
+      'application/rss+xml': [
+        {
+          url: '/rss',
+          title: 'RSS Feed',
+        },
+      ],
+    },
+  },
+};
 
 export default async function RootLayout({
   children,

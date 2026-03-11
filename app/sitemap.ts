@@ -1,7 +1,7 @@
 import { getSlugs } from '../lib/content';
 
 export default function sitemap() {
-  const base = 'https://cassiossousa.github.io';
+  const base = 'https://professional-portfolio-mu-gray.vercel.app';
 
   const blog = getSlugs('blog').map((slug) => ({
     url: `${base}/blog/${slug}`,
