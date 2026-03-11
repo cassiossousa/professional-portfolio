@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* -------------------------------- */
+/* Design tokens */
+/* -------------------------------- */
+
+:root {
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+
+  --color-border: #e2e8f0;
+}
+
+.dark {
+  --color-background: #020617;
+  --color-foreground: #f1f5f9;
+
+  --color-muted: #0f172a;
+  --color-muted-foreground: #94a3b8;
+
+  --color-border: #1e293b;
+}
+
+/* -------------------------------- */
+/* Base */
+/* -------------------------------- */
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background
+      text-foreground
+      antialiased;
+
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
+  }
+
+  h1 {
+    @apply text-4xl font-bold tracking-tight;
+  }
+
+  h2 {
+    @apply text-3xl font-semibold;
+  }
+
+  h3 {
+    @apply text-xl font-semibold;
+  }
+
+  p {
+    @apply leading-relaxed text-muted-foreground;
+  }
+}
+
+/* -------------------------------- */
+/* Layout utilities */
+/* -------------------------------- */
+
+@layer utilities {
+  .container-main {
+    @apply max-w-5xl mx-auto px-6 py-12;
+  }
+}
+
+/* -------------------------------- */
+/* Components */
+/* -------------------------------- */
+
+@layer components {
+  .card {
+    @apply rounded-lg
+      border
+      bg-white
+      dark:bg-neutral-900
+      shadow-card
+      p-6;
+  }
+
+  .button-primary {
+    @apply inline-flex
+      items-center
+      rounded-md
+      bg-primary
+      text-primary-foreground
+      px-4
+      py-2
+      text-sm
+      font-medium
+      hover:opacity-90
+      transition;
+  }
+
+  .nav-link {
+    @apply text-sm
+      text-muted-foreground
+      hover:text-foreground
+      transition;
+  }
+}
+
+/* -------------------------------- */
+/* Blog prose */
+/* -------------------------------- */
+
+.prose h1 {
+  @apply text-4xl font-bold;
+}
+
+.prose h2 {
+  @apply text-2xl font-semibold mt-10;
+}
+
+.prose p {
+  @apply mt-4;
+}
+
+.prose code {
+  background: #0f172a;
+  color: #e2e8f0;
+
+  padding: 0.2rem 0.4rem;
+
+  border-radius: 4px;
+}

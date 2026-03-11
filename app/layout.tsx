@@ -1,38 +1,33 @@
-import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
+import { Locale } from '../i18n/config';
+import { getDictionary } from '../i18n/dictionaries';
+import { TranslationProvider } from '../i18n/provider';
+import './globals.css';
 
-export const metadata = {
-  title: "Cássio Sousa | Staff Software Engineer",
-  description:
-    "Staff Software Engineer specialized in distributed systems, SaaS platforms and cloud architectures.",
-  openGraph: {
-    title: "Cássio Sousa",
-    description: "Staff Software Engineer",
-    url: "https://cassiossousa.vercel.app",
-    siteName: "Cássio Sousa",
-    locale: "en_US",
-    type: "website",
-  },
-};
+import { cookies } from 'next/headers';
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
+
+  const locale = (cookieStore.get('lang')?.value ?? 'en') as Locale;
+
+  const messages = await getDictionary(locale);
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body>
-        <a className="skip-link" href="#content">
-          Skip to content
-        </a>
+        <TranslationProvider messages={messages}>
+          <Navbar />
 
-        <Navbar />
+          <main>{children}</main>
 
-        <main id="content">{children}</main>
-
-        <Footer />
+          <Footer />
+        </TranslationProvider>
       </body>
     </html>
   );

@@ -1,0 +1,12 @@
+{
+  "nav": {
+    "experience": "Work Experience",
+    "projects": "Projects",
+    "blog": "Blog"
+  },
+  "home": {
+    "title": "Cássio Sousa",
+    "subtitle": "Staff Software Engineer",
+    "description": "Specialized in distributed systems and SaaS architectures."
+  }
+}

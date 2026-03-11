@@ -1,51 +1,58 @@
-import ExperienceCard from "@/components/ExperienceCard";
+import Link from 'next/link';
+import { cookies } from 'next/headers';
 
-export default function Experience() {
-  const jobs = [
-    {
-      company: "F1rst Digital Services - Santander",
-      role: "Senior Software Engineer",
-      period: "Sep 2023 - Aug 2025",
-      description:
-        "Technical reference in squad supporting architecture decisions and evolution of corporate services.",
-    },
-    {
-      company: "Galena Educação",
-      role: "Specialist Software Engineer",
-      period: "Apr 2022 - Mar 2023",
-      description:
-        "Technical owner of SaaS employability platform used by 7000+ students.",
-    },
-    {
-      company: "Lemon Energia",
-      role: "Senior Software Engineer",
-      period: "Feb 2021 - Apr 2022",
-      description:
-        "Redesign of corporate design system and reusable components.",
-    },
-    {
-      company: "Loggi",
-      role: "Senior Software Engineer",
-      period: "Jun 2019 - Feb 2021",
-      description:
-        "Development of logistics SaaS platform serving ~2M monthly users.",
-    },
-    {
-      company: "Geekie",
-      role: "Software Engineer",
-      period: "Jan 2017 - Apr 2019",
-      description:
-        "Development of educational platforms used by students nationwide.",
-    },
-  ];
+import { getAllEntries } from '../../lib/content';
+import { ContentEntry } from '../../types/content';
+
+export default async function ExperiencePage() {
+  const cookieStore = await cookies();
+  const locale = cookieStore.get('lang')?.value ?? 'en';
+  const roles: ContentEntry[] = getAllEntries('experience', locale);
+
+  const sortedRoles = roles.sort((a, b) => {
+    const aStart = a.frontmatter.start ?? '';
+    const bStart = b.frontmatter.start ?? '';
+
+    return bStart.localeCompare(aStart);
+  });
 
   return (
-    <section className="container">
-      <h1>Professional Experience</h1>
+    <section className="container-main">
+      <h1 className="text-3xl font-bold mb-10">Experience</h1>
 
-      {jobs.map((job) => (
-        <ExperienceCard key={job.company} {...job} />
-      ))}
+      <div className="space-y-10">
+        {sortedRoles.map((role) => {
+          const {
+            company,
+            role: title,
+            location,
+            start,
+            end,
+          } = role.frontmatter;
+
+          const period = end ? `${start} – ${end}` : `${start} – Present`;
+
+          return (
+            <article key={role.slug} className="border-b pb-6">
+              <h2 className="text-xl font-semibold">
+                <Link
+                  href={`/experience/${role.slug}`}
+                  className="hover:underline"
+                >
+                  {title}
+                </Link>
+              </h2>
+
+              <p className="text-sm opacity-80 mt-1">
+                {company}
+                {location && ` • ${location}`}
+              </p>
+
+              <p className="text-sm opacity-60 mt-1">{period}</p>
+            </article>
+          );
+        })}
+      </div>
     </section>
   );
 }

@@ -6,8 +6,10 @@ Professional portfolio and engineering blog.
 
 - Next.js
 - TypeScript
-- MDX blog
-- GitHub Actions CI
+- MDX Blog
+- Tailwind
+- Jest
+- GitHub Actions
 
 ## Development
 
