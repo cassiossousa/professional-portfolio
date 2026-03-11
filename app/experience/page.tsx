@@ -4,9 +4,13 @@ import { cookies } from 'next/headers';
 import { getAllEntries } from '../../lib/content';
 import { ContentEntry } from '../../types/content';
 
+import { getDictionary } from '../../i18n/dictionaries';
+import { Locale } from '../../i18n/config';
+
 export default async function ExperiencePage() {
   const cookieStore = await cookies();
-  const locale = cookieStore.get('lang')?.value ?? 'en';
+  const locale = (cookieStore.get('lang')?.value ?? 'en') as Locale;
+  const t = await getDictionary(locale);
   const roles: ContentEntry[] = await getAllEntries('experience', locale);
 
   const sortedRoles = roles.sort((a, b) => {
@@ -17,7 +21,7 @@ export default async function ExperiencePage() {
 
   return (
     <section className="container-main">
-      <h1 className="text-3xl font-bold mb-10">Experience</h1>
+      <h1 className="text-3xl font-bold mb-10">{t.nav.experience}</h1>
 
       <div className="space-y-10">
         {sortedRoles.map((role) => {
@@ -29,7 +33,9 @@ export default async function ExperiencePage() {
             end,
           } = role.frontmatter;
 
-          const period = end ? `${start} - ${end}` : `${start} - Present`;
+          const period = end
+            ? `${start} - ${end}`
+            : `${start} - ${t.experience.present}`;
 
           return (
             <article key={role.slug} className="border-b pb-6">
