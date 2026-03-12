@@ -11,10 +11,6 @@ export default function sitemap() {
     url: `${base}/projects/${slug}`,
   }));
 
-  const work = getSlugs('work').map((slug) => ({
-    url: `${base}/work/${slug}`,
-  }));
-
   return [
     { url: base },
     { url: `${base}/blog` },
@@ -22,6 +18,5 @@ export default function sitemap() {
     { url: `${base}/work` },
     ...blog,
     ...projects,
-    ...work,
   ];
 }

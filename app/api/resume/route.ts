@@ -4,8 +4,8 @@ export async function GET() {
   const html = `
   <html>
   <body>
-  <h1>Cássio Sousa</h1>
-  <p>Staff Software Engineer</p>
+  <h1>Cássio dos Santos Sousa</h1>
+  <p>Software Engineer</p>
   </body>
   </html>
   `;

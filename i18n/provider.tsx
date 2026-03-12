@@ -1,16 +1,15 @@
 'use client';
 
 import { createContext, useContext } from 'react';
+import { Translation } from './types';
 
-type Messages = Record<string, any>;
-
-const TranslationContext = createContext<Messages>({});
+const TranslationContext = createContext<Translation | null>(null);
 
 export function TranslationProvider({
   messages,
   children,
 }: {
-  messages: Messages;
+  messages: Translation;
   children: React.ReactNode;
 }) {
   return (
@@ -20,6 +19,8 @@ export function TranslationProvider({
   );
 }
 
-export function useMessages() {
-  return useContext(TranslationContext);
+export function useMessages(): Translation {
+  const context = useContext(TranslationContext);
+  if (!context) throw new Error('TranslationProvider not found in tree');
+  return context;
 }

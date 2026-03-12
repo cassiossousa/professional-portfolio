@@ -9,7 +9,7 @@ export default function Footer() {
         <div>
           <p className="font-semibold">Cássio dos Santos Sousa</p>
 
-          <p className="text-sm text-gray-500 mt-1">Staff Software Engineer</p>
+          <p className="text-sm text-gray-500 mt-1">Software Engineer</p>
         </div>
 
         <nav aria-label="Footer navigation">
@@ -44,7 +44,9 @@ export default function Footer() {
           </ul>
         </nav>
 
-        <p className="text-sm text-gray-500">© {year} Cássio Sousa</p>
+        <p className="text-sm text-gray-500">
+          © {year} Cássio dos Santos Sousa
+        </p>
       </div>
     </footer>
   );

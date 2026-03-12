@@ -30,7 +30,13 @@ function calculateReadingTime(text: string) {
   return Math.max(1, Math.ceil(words / 200));
 }
 
+// ✅ Updated getSlugs to skip generating "slugs" for work content
 export function getSlugs(type: ContentType) {
+  if (type === 'work') {
+    // No individual work slugs
+    return [];
+  }
+
   const dir = getDir(type);
 
   return fs
@@ -49,7 +55,6 @@ export function getEntry(
   const file = resolveFile(dir, slug, locale);
 
   const source = fs.readFileSync(file, 'utf8');
-
   const { data, content } = matter(source);
 
   const normalizedDate =
@@ -67,6 +72,16 @@ export function getEntry(
   };
 }
 
+// ✅ getAllEntries still works for work, returning all entries
 export function getAllEntries(type: ContentType, locale: string) {
-  return getSlugs(type).map((slug) => getEntry(type, slug, locale));
+  const slugs =
+    type === 'work'
+      ? // For work, get all files in directory
+        fs
+          .readdirSync(getDir(type))
+          .filter((file) => file.endsWith('.mdx'))
+          .map((file) => file.replace(/(\.[a-z]{2}(-[A-Z]{2})?)?\.mdx$/, ''))
+      : getSlugs(type);
+
+  return slugs.map((slug) => getEntry(type, slug, locale));
 }

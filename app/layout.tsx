@@ -1,17 +1,16 @@
+import { Metadata } from 'next';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
-import { Locale } from '../i18n/config';
 import { getDictionary } from '../i18n/dictionaries';
 import { TranslationProvider } from '../i18n/provider';
-import './globals.css';
-
-import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import { Locale } from '../i18n/types';
+import './globals.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://professional-portfolio-mu-gray.vercel.app'),
   title: {
-    default: 'Cássio Sousa — Software Engineer',
+    default: 'Cássio Sousa - Software Engineer',
     template: '%s | Cássio Sousa',
   },
   description: 'Software engineering portfolio, projects and technical blog.',
@@ -41,9 +40,7 @@ export default async function RootLayout({
       <body>
         <TranslationProvider messages={messages}>
           <Navbar />
-
           <main>{children}</main>
-
           <Footer />
         </TranslationProvider>
       </body>

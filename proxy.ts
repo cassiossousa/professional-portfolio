@@ -6,9 +6,7 @@ export function proxy(request: NextRequest) {
 
   if (lang) {
     const response = NextResponse.next();
-
     response.cookies.set('lang', lang);
-
     return response;
   }
 

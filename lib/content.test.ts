@@ -41,12 +41,12 @@ describe('content.ts', () => {
   });
 
   describe('getSlugs', () => {
-    it('should filter MDX files and remove extensions correctly', () => {
+    it('should return empty array for work content type', () => {
       // Arrange
       const mockFiles = [
         'job1.mdx',
         'job2.mdx',
-        'job3.pt-BR.mdx', // Should be excluded (has extra dot)
+        'job3.pt-BR.mdx',
         'not-mdx-file.txt',
         'job4.mdx',
       ];
@@ -57,7 +57,7 @@ describe('content.ts', () => {
       const result = getSlugs('work');
 
       // Assert
-      expect(result).toEqual(['job1', 'job2', 'job4']);
+      expect(result).toEqual([]);
     });
 
     it('should handle empty directory', () => {
@@ -296,14 +296,15 @@ describe('content.ts', () => {
       expect(() => getEntry('work', 'test-job', 'en')).toThrow('Parse error');
     });
 
-    it('should handle directory read errors', () => {
+    it('should return empty array for work content type regardless of directory errors', () => {
       // Arrange
       mockFs.readdirSync.mockImplementation(() => {
         throw new Error('Directory read error');
       });
 
       // Act & Assert
-      expect(() => getSlugs('work')).toThrow('Directory read error');
+      expect(() => getSlugs('work')).not.toThrow();
+      expect(getSlugs('work')).toEqual([]);
     });
   });
 });

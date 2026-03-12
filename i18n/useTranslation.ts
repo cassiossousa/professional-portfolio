@@ -1,13 +1,12 @@
 'use client';
 
 import { useMessages } from './provider';
+import { Translation } from './types';
 
-export function useTranslation(namespace: string) {
+export function useTranslation<K extends keyof Translation>(namespace: K) {
   const messages = useMessages();
-
-  function t(key: string) {
-    return messages?.[namespace]?.[key] ?? key;
-  }
-
-  return { t };
+  return {
+    t: (key: keyof Translation[K]) =>
+      messages[namespace][key] ?? (key as string),
+  };
 }
