@@ -1,6 +1,6 @@
 {
   "nav": {
-    "experience": "Experiência Profissional",
+    "work": "Trabalho",
     "projects": "Projetos",
     "blog": "Blog"
   },
@@ -9,7 +9,8 @@
     "subtitle": "Engenheiro de Software Staff",
     "description": "Especialista em sistemas distribuídos e arquiteturas SaaS."
   },
-  "experience": {
+  "work": {
+    "title": "Experiência Profissional",
     "present": "Presente"
   }
 }

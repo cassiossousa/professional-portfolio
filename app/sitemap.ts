@@ -11,17 +11,17 @@ export default function sitemap() {
     url: `${base}/projects/${slug}`,
   }));
 
-  const experience = getSlugs('experience').map((slug) => ({
-    url: `${base}/experience/${slug}`,
+  const work = getSlugs('work').map((slug) => ({
+    url: `${base}/work/${slug}`,
   }));
 
   return [
     { url: base },
     { url: `${base}/blog` },
     { url: `${base}/projects` },
-    { url: `${base}/experience` },
+    { url: `${base}/work` },
     ...blog,
     ...projects,
-    ...experience,
+    ...work,
   ];
 }

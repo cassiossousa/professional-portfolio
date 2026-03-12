@@ -5,14 +5,14 @@ import { getEntry, getSlugs } from '../../../lib/content';
 import { renderMDX } from '../../../lib/mdx';
 
 export function generateStaticParams() {
-  const slugs = getSlugs('experience');
+  const slugs = getSlugs('work');
 
   return slugs.map((slug) => ({
     slug,
   }));
 }
 
-export default async function ExperienceSlugPage({
+export default async function WorkSlugPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
@@ -25,7 +25,7 @@ export default async function ExperienceSlugPage({
   let entry;
 
   try {
-    entry = getEntry('experience', slug, locale);
+    entry = getEntry('work', slug, locale);
   } catch {
     notFound();
   }

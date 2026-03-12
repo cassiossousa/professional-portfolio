@@ -54,7 +54,7 @@ describe('content.ts', () => {
       mockFs.readdirSync.mockReturnValue(mockFiles as any);
 
       // Act
-      const result = getSlugs('experience');
+      const result = getSlugs('work');
 
       // Assert
       expect(result).toEqual(['job1', 'job2', 'job4']);
@@ -65,7 +65,7 @@ describe('content.ts', () => {
       mockFs.readdirSync.mockReturnValue([]);
 
       // Act
-      const result = getSlugs('experience');
+      const result = getSlugs('work');
 
       // Assert
       expect(result).toEqual([]);
@@ -99,14 +99,18 @@ describe('content.ts', () => {
       mockMatter.mockReturnValue(mockMatterResult);
 
       // Act
-      const result = getEntry('experience', 'test-job', 'en');
+      const result = getEntry('work', 'test-job', 'en');
 
       // Assert
       expect(result).toEqual({
         slug: 'test-job',
-        type: 'experience',
-        frontmatter: mockMatterResult.data,
+        type: 'work',
+        frontmatter: {
+          ...mockMatterResult.data,
+          date: undefined,
+        },
         content: mockMatterResult.content,
+        readingTime: 1,
       });
     });
 
@@ -122,14 +126,18 @@ describe('content.ts', () => {
       mockMatter.mockReturnValue(mockMatterResult);
 
       // Act
-      const result = getEntry('experience', 'test-job', locale);
+      const result = getEntry('work', 'test-job', locale);
 
       // Assert
       expect(result).toEqual({
         slug: 'test-job',
-        type: 'experience',
-        frontmatter: mockMatterResult.data,
+        type: 'work',
+        frontmatter: {
+          ...mockMatterResult.data,
+          date: undefined,
+        },
         content: mockMatterResult.content,
+        readingTime: 1,
       });
     });
 
@@ -145,14 +153,18 @@ describe('content.ts', () => {
       mockMatter.mockReturnValue(mockMatterResult);
 
       // Act
-      const result = getEntry('experience', 'test-job', locale);
+      const result = getEntry('work', 'test-job', locale);
 
       // Assert
       expect(result).toEqual({
         slug: 'test-job',
-        type: 'experience',
-        frontmatter: mockMatterResult.data,
+        type: 'work',
+        frontmatter: {
+          ...mockMatterResult.data,
+          date: undefined,
+        },
         content: mockMatterResult.content,
+        readingTime: 1,
       });
     });
 
@@ -161,7 +173,7 @@ describe('content.ts', () => {
       mockFs.existsSync.mockReturnValue(false);
 
       // Act & Assert
-      expect(() => getEntry('experience', 'test-job', 'en')).toThrow(
+      expect(() => getEntry('work', 'test-job', 'en')).toThrow(
         'Content not found: test-job',
       );
     });
@@ -186,10 +198,14 @@ describe('content.ts', () => {
       mockMatter.mockReturnValue(minimalMatterResult);
 
       // Act
-      const result = getEntry('experience', 'test-job', 'en');
+      const result = getEntry('work', 'test-job', 'en');
 
       // Assert
-      expect(result.frontmatter).toEqual(minimalMatterResult.data);
+      expect(result.frontmatter).toEqual({
+        ...minimalMatterResult.data,
+        date: undefined,
+      });
+      expect(result.readingTime).toBe(1);
     });
   });
 
@@ -212,7 +228,7 @@ describe('content.ts', () => {
       } as any);
 
       // Act
-      const result = getAllEntries('experience', 'en');
+      const result = getAllEntries('work', 'en');
 
       // Assert
       expect(result).toHaveLength(3);
@@ -226,7 +242,7 @@ describe('content.ts', () => {
       mockFs.readdirSync.mockReturnValue([]);
 
       // Act
-      const result = getAllEntries('experience', 'en');
+      const result = getAllEntries('work', 'en');
 
       // Assert
       expect(result).toEqual([]);
@@ -239,7 +255,7 @@ describe('content.ts', () => {
       mockFs.existsSync.mockReturnValue(false);
 
       // Act & Assert
-      expect(() => getEntry('experience', 'test-job', 'en')).toThrow(
+      expect(() => getEntry('work', 'test-job', 'en')).toThrow(
         'Content not found: test-job',
       );
     });
@@ -252,7 +268,7 @@ describe('content.ts', () => {
       });
 
       // Act & Assert
-      expect(() => getEntry('experience', 'test-job', 'en')).toThrow(
+      expect(() => getEntry('work', 'test-job', 'en')).toThrow(
         'File system error',
       );
     });
@@ -265,9 +281,7 @@ describe('content.ts', () => {
       });
 
       // Act & Assert
-      expect(() => getEntry('experience', 'test-job', 'en')).toThrow(
-        'Read error',
-      );
+      expect(() => getEntry('work', 'test-job', 'en')).toThrow('Read error');
     });
 
     it('should handle matter parsing errors', () => {
@@ -279,9 +293,7 @@ describe('content.ts', () => {
       });
 
       // Act & Assert
-      expect(() => getEntry('experience', 'test-job', 'en')).toThrow(
-        'Parse error',
-      );
+      expect(() => getEntry('work', 'test-job', 'en')).toThrow('Parse error');
     });
 
     it('should handle directory read errors', () => {
@@ -291,7 +303,7 @@ describe('content.ts', () => {
       });
 
       // Act & Assert
-      expect(() => getSlugs('experience')).toThrow('Directory read error');
+      expect(() => getSlugs('work')).toThrow('Directory read error');
     });
   });
 });

@@ -1,4 +1,4 @@
-export type ContentType = 'blog' | 'projects' | 'experience';
+export type ContentType = 'blog' | 'projects' | 'work';
 
 export interface BaseFrontmatter {
   title?: string;

@@ -7,11 +7,11 @@ import { ContentEntry } from '../../types/content';
 import { getDictionary } from '../../i18n/dictionaries';
 import { Locale } from '../../i18n/config';
 
-export default async function ExperiencePage() {
+export default async function WorkPage() {
   const cookieStore = await cookies();
   const locale = (cookieStore.get('lang')?.value ?? 'en') as Locale;
   const t = await getDictionary(locale);
-  const roles: ContentEntry[] = await getAllEntries('experience', locale);
+  const roles: ContentEntry[] = await getAllEntries('work', locale);
 
   const sortedRoles = roles.sort((a, b) => {
     const aStart = new Date(a.frontmatter.start ?? '');
@@ -21,7 +21,7 @@ export default async function ExperiencePage() {
 
   return (
     <section className="container-main">
-      <h1 className="text-3xl font-bold mb-10">{t.nav.experience}</h1>
+      <h1 className="text-3xl font-bold mb-10">{t.work.title}</h1>
 
       <div className="space-y-10">
         {sortedRoles.map((role) => {
@@ -35,15 +35,12 @@ export default async function ExperiencePage() {
 
           const period = end
             ? `${start} - ${end}`
-            : `${start} - ${t.experience.present}`;
+            : `${start} - ${t.work.present}`;
 
           return (
             <article key={role.slug} className="border-b pb-6">
               <h2 className="text-xl font-semibold">
-                <Link
-                  href={`/experience/${role.slug}`}
-                  className="hover:underline"
-                >
+                <Link href={`/work/${role.slug}`} className="hover:underline">
                   {title}
                 </Link>
               </h2>

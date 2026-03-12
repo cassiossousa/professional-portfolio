@@ -12,7 +12,7 @@ export default function Navbar() {
     <nav className="container-main flex justify-between py-6">
       <div className="flex gap-6">
         <Link href="/">Home</Link>
-        <Link href="/experience">{t('experience')}</Link>
+        <Link href="/work">{t('work')}</Link>
         <Link href="/projects">{t('projects')}</Link>
         <Link href="/blog">{t('blog')}</Link>
       </div>

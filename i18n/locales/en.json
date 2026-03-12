@@ -1,6 +1,6 @@
 {
   "nav": {
-    "experience": "Work Experience",
+    "work": "Work",
     "projects": "Projects",
     "blog": "Blog"
   },
@@ -9,7 +9,8 @@
     "subtitle": "Staff Software Engineer",
     "description": "Specialized in distributed systems and SaaS architectures."
   },
-  "experience": {
+  "work": {
+    "title": "Work Experience",
     "present": "Present"
   }
 }
