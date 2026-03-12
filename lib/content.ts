@@ -72,16 +72,28 @@ export function getEntry(
   };
 }
 
-// ✅ getAllEntries still works for work, returning all entries
 export function getAllEntries(type: ContentType, locale: string) {
-  const slugs =
-    type === 'work'
-      ? // For work, get all files in directory
-        fs
-          .readdirSync(getDir(type))
-          .filter((file) => file.endsWith('.mdx'))
-          .map((file) => file.replace(/(\.[a-z]{2}(-[A-Z]{2})?)?\.mdx$/, ''))
-      : getSlugs(type);
+  const dir = getDir(type);
+
+  const files = fs
+    .readdirSync(dir)
+    .filter((file) => file.endsWith('.mdx'))
+    // Keep only files for the current locale or base files
+    .filter((file) => {
+      if (type !== 'work') return true;
+
+      const isLocaleFile = file.endsWith(`.${locale}.mdx`);
+      const isBaseFile = !file.match(/\.[a-z]{2}(-[A-Z]{2})?\.mdx$/);
+
+      return isLocaleFile || isBaseFile;
+    });
+
+  // Map to unique slugs
+  const slugs = Array.from(
+    new Set(
+      files.map((file) => file.replace(/(\.[a-z]{2}(-[A-Z]{2})?)?\.mdx$/, '')),
+    ),
+  );
 
   return slugs.map((slug) => getEntry(type, slug, locale));
 }
