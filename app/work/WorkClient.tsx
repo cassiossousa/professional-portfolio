@@ -12,7 +12,27 @@ interface WorkClientProps {
 export function WorkClient({ roles, t }: WorkClientProps) {
   return (
     <section className="container-main">
-      <h1 className="text-3xl font-bold mb-10">{t.work.title}</h1>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
+        <h1 className="text-3xl font-bold">{t.work.title}</h1>
+        <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+          <a
+            href="/resume"
+            target="_blank"
+            className="
+              w-full sm:w-auto
+              text-center
+              px-4 py-2
+              border
+              rounded
+              hover:bg-neutral-100
+              transition
+            "
+          >
+            📄 {t.work.previewResume}
+          </a>
+        </div>
+      </div>
+
       <div className="flex flex-col gap-4">
         {roles.map((role, index) => (
           <AccordionItem key={`${role.slug}-${index}`} role={role} t={t} />
