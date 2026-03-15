@@ -2,6 +2,7 @@ import { defineMessages, Translation } from '../types';
 
 const en: Translation = {
   home: {
+    name: 'Cássio dos Santos Sousa',
     title: 'Software Engineer',
     subtitle: 'Frontend Architecture • Large-Scale Web Platforms',
     description:

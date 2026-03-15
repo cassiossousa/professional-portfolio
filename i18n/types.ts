@@ -7,6 +7,7 @@ export const defaultLocale: Locale = 'en';
 // Define translation structure
 export interface Translation {
   home: {
+    name: string;
     title: string;
     subtitle: string;
     description: string;
