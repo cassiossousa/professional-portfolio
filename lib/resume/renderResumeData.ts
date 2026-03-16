@@ -1,44 +1,24 @@
-import { ContentEntry } from '../../types/content';
 import { Translation } from '../../i18n/types';
-
-export interface ResumeRole {
-  company: string;
-  title: string;
-  location?: string;
-  period: string;
-  bullets: string[];
-}
+import { profile } from '../profile';
+import { WorkRole } from '../work/workModel';
 
 export interface ResumeData {
+  name: string;
+  title: string;
   summary: string;
-  roles: ResumeRole[];
+  roles: WorkRole[];
   languages: string[];
 }
 
 export function renderResumeData(
-  roles: ContentEntry[],
+  roles: WorkRole[],
   t: Translation,
 ): ResumeData {
   return {
+    name: profile.name,
+    title: profile.title,
     summary: t.resume.summary,
-
-    roles: roles.map((role) => {
-      const { company, role: title, location, start, end } = role.frontmatter;
-      const period = end ? `${start} - ${end}` : `${start} - ${t.work.present}`;
-      const bullets = role.content
-        .split('\n')
-        .map((l) => l.trim())
-        .filter(Boolean);
-
-      return {
-        company: company || '',
-        title: title || '',
-        location: location || '',
-        period,
-        bullets,
-      };
-    }),
-
+    roles,
     languages: [t.resume.languages.portuguese, t.resume.languages.english],
   };
 }

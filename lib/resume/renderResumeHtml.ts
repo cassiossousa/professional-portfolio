@@ -1,18 +1,30 @@
 import { ResumeData } from './renderResumeData';
+import { Translation } from '../../i18n/types';
 
-export function renderResumeHtml(data: ResumeData) {
+function escapeHtml(text: string): string {
+  const map: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;',
+  };
+  return text.replace(/[&<>"']/g, (m) => map[m]);
+}
+
+export function renderResumeHtml(data: ResumeData, t: Translation) {
   const rolesHtml = data.roles
     .map(
       (r) => `
       <div class="role">
-        <h3>${r.company}</h3>
-        <div class="title">${r.title}</div>
+        <h3>${escapeHtml(r.company)}</h3>
+        <div class="title">${escapeHtml(r.title)}</div>
         <div class="meta">
-          ${r.location ? `${r.location} | ` : ''}${r.period}
+          ${r.location ? `${escapeHtml(r.location)} | ` : ''}${escapeHtml(r.period)}
         </div>
 
         <ul>
-          ${r.bullets.map((b) => `<li>${b}</li>`).join('')}
+          ${r.bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join('')}
         </ul>
       </div>
     `,
@@ -69,19 +81,19 @@ ul {
 
 <body>
 
-<h1>Cássio dos Santos Sousa</h1>
-<div>Senior Software Engineer</div>
+<h1>${escapeHtml(data.name)}</h1>
+<div>${escapeHtml(data.title)}</div>
 
-<h2>Professional Summary</h2>
-<p>${data.summary}</p>
+<h2>${escapeHtml(t.resume.summaryTitle)}</h2>
+<p>${escapeHtml(data.summary)}</p>
 
-<h2>Professional Experience</h2>
+<h2>${escapeHtml(t.resume.experienceTitle)}</h2>
 
 ${rolesHtml}
 
-<h2>Languages</h2>
+<h2>${escapeHtml(t.resume.languagesTitle)}</h2>
 <ul>
-${data.languages.map((l) => `<li>${l}</li>`).join('')}
+${data.languages.map((l) => `<li>${escapeHtml(l)}</li>`).join('')}
 </ul>
 
 </body>

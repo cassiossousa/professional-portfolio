@@ -1,16 +1,18 @@
-export const resumeProfile = {
+export const profile = {
   name: 'Cássio dos Santos Sousa',
 
   title:
-    'Senior Fullstack Engineer | React, TypeScript, Python, Large-Scale Web Applications, Frontend Architecture',
+    'Senior Fullstack Engineer | React, TypeScript, Python, Large-Scale Web Applications',
 
   location: 'São Paulo - SP, Brazil',
 
-  linkedinUrl: 'https://linkedin.com/in/cassiossousa',
-  linkedin: 'cassiossousa',
+  links: {
+    linkedin: 'https://linkedin.com/in/cassiossousa',
+    github: 'https://github.com/cassiossousa',
+  },
 };
 
-export const resumeSkills = {
+export const skills = {
   frontend: [
     'React',
     'TypeScript',

@@ -12,18 +12,22 @@ import { renderResumeHtml } from '../../lib/resume/renderResumeHtml';
 
 import { Locale } from '../../i18n/types';
 
+import { mapContentToWorkRoles } from '../../lib/work/workModel';
+
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const cookieStore = await cookies();
   const locale = (cookieStore.get('lang')?.value as Locale) ?? 'en';
-  const roles = await getAllEntries('work', locale);
   const t = await getDictionary(locale);
-  const data = renderResumeData(roles, t);
-  const html = renderResumeHtml(data);
-  const isVercel = !!process.env.VERCEL;
+  const entries = await getAllEntries('work', locale);
+  const roles = mapContentToWorkRoles(entries, t);
 
+  const data = renderResumeData(roles, t);
+  const html = renderResumeHtml(data, t);
+
+  const isVercel = !!process.env.VERCEL;
   const executablePath = isVercel
     ? await chromium.executablePath()
     : 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';

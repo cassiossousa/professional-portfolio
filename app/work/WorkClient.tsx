@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { ContentEntry } from '../../types/content';
 import { Translation } from '../../i18n/types';
+import { WorkRole } from '../../lib/work/workModel';
 
 interface WorkClientProps {
-  roles: ContentEntry[];
+  roles: WorkRole[];
   t: Translation;
 }
 
@@ -35,35 +35,28 @@ export function WorkClient({ roles, t }: WorkClientProps) {
 
       <div className="flex flex-col gap-4">
         {roles.map((role, index) => (
-          <AccordionItem key={`${role.slug}-${index}`} role={role} t={t} />
+          <AccordionItem key={`${role.company}-${index}`} role={role} />
         ))}
       </div>
     </section>
   );
 }
 
-function AccordionItem({ role, t }: { role: ContentEntry; t: Translation }) {
+function AccordionItem({ role }: { role: WorkRole }) {
   const [open, setOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
+  const { company, title, location, period, bullets } = role;
 
-  const { company, role: title, location, start, end } = role.frontmatter;
-  const period = end ? `${start} - ${end}` : `${start} - ${t.work.present}`;
-
-  // Animate height
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
       if (contentRef.current) {
         setHeight(open ? contentRef.current.scrollHeight : 0);
       }
     });
+
     return () => cancelAnimationFrame(frame);
   }, [open]);
-
-  const bullets = role.content
-    .split('\n')
-    .map((line) => line.trim())
-    .filter((line) => line !== '');
 
   return (
     <article className="border-b pb-4">
