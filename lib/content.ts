@@ -32,7 +32,7 @@ function calculateReadingTime(text: string) {
 
 // ✅ Updated getSlugs to skip generating "slugs" for work content
 export function getSlugs(type: ContentType) {
-  if (type === 'work') {
+  if (type === 'work-experience') {
     // No individual work slugs
     return [];
   }
@@ -80,7 +80,7 @@ export function getAllEntries(type: ContentType, locale: string) {
     .filter((file) => file.endsWith('.mdx'))
     // Keep only files for the current locale or base files
     .filter((file) => {
-      if (type !== 'work') return true;
+      if (type !== 'work-experience') return true;
 
       const isLocaleFile = file.endsWith(`.${locale}.mdx`);
       const isBaseFile = !file.match(/\.[a-z]{2}(-[A-Z]{2})?\.mdx$/);

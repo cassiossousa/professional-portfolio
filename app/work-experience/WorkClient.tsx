@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Translation } from '../../i18n/types';
-import { WorkRole } from '../../lib/work/workModel';
+import { WorkRole } from '../../lib/work-experience/workModel';
 
 interface WorkClientProps {
   roles: WorkRole[];
@@ -13,7 +13,7 @@ export function WorkClient({ roles, t }: WorkClientProps) {
   return (
     <section className="container-main">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
-        <h1 className="text-3xl font-bold">{t.work.title}</h1>
+        <h1 className="text-3xl font-bold">{t.workExperience.title}</h1>
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
           <a
             href="/resume"
@@ -28,7 +28,7 @@ export function WorkClient({ roles, t }: WorkClientProps) {
               transition
             "
           >
-            📄 {t.work.previewResume}
+            📄 {t.workExperience.previewResume}
           </a>
         </div>
       </div>

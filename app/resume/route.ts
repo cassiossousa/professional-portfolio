@@ -11,7 +11,7 @@ import { renderResumeHtml } from '../../lib/resume/renderResumeHtml';
 import { getCachedPdf, setCachedPdf } from '../../lib/resume/pdfCache';
 
 import { Locale } from '../../i18n/types';
-import { mapContentToWorkRoles } from '../../lib/work/workModel';
+import { mapContentToWorkRoles } from '../../lib/work-experience/workModel';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -21,7 +21,7 @@ export async function GET() {
   const locale = (cookieStore.get('lang')?.value as Locale) ?? 'en';
 
   const t = await getDictionary(locale);
-  const entries = await getAllEntries('work', locale);
+  const entries = await getAllEntries('work-experience', locale);
   const roles = mapContentToWorkRoles(entries, t);
 
   const data = renderResumeData(roles, t);

@@ -13,7 +13,7 @@ export interface Translation {
     description: string;
   };
 
-  work: {
+  workExperience: {
     title: string;
     present: string;
     previewResume: string;

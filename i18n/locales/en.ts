@@ -9,7 +9,7 @@ const en: Translation = {
       'Senior Software Engineer with 10+ years building high-traffic web platforms using React, TypeScript, and modern frontend architectures.',
   },
 
-  work: {
+  workExperience: {
     title: 'Work Experience',
     present: 'Present',
     previewResume: 'Preview Resume (PDF)',

@@ -15,7 +15,7 @@ export default function NavbarClient({ t }: NavbarClientProps) {
 
   const links = [
     { href: '/', label: 'Home' },
-    { href: '/work', label: t.work.title },
+    { href: '/work-experience', label: t.workExperience.title },
     { href: '/projects', label: t.projects.title },
     { href: '/blog', label: t.blog.title },
   ];

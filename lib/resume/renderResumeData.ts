@@ -1,6 +1,6 @@
 import { Translation } from '../../i18n/types';
 import { profile } from '../profile';
-import { WorkRole } from '../work/workModel';
+import { WorkRole } from '../work-experience/workModel';
 
 export interface ResumeData {
   name: string;

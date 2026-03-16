@@ -43,7 +43,7 @@ function buildPeriod(start?: string, end?: string, t?: Translation): string {
     month: 'short',
   });
 
-  if (!end) return `${startStr} - ${t?.work.present ?? 'Present'}`;
+  if (!end) return `${startStr} - ${t?.workExperience.present ?? 'Present'}`;
 
   if (!endDate) return `${startStr} - ${end}`; // Return end as-is if invalid
 

@@ -9,7 +9,7 @@ const pt: Translation = {
       'Engenheiro de Software Sênior com mais de 10 anos de experiência desenvolvendo aplicações web de grande escala com React, TypeScript e arquiteturas modernas.',
   },
 
-  work: {
+  workExperience: {
     title: 'Experiência Profissional',
     present: 'Atual',
     previewResume: 'Visualizar Currículo (PDF)',
