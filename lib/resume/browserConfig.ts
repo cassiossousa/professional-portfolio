@@ -26,31 +26,44 @@ export async function getBrowserConfig(): Promise<BrowserConfig> {
           '--no-sandbox',
           '--no-zygote',
           '--single-process',
+          '--disable-extensions',
+          '--disable-background-timer-throttling',
+          '--disable-backgrounding-occluded-windows',
+          '--disable-renderer-backgrounding',
+          '--disable-web-security',
+          '--disable-features=VizDisplayCompositor',
         ],
         executablePath,
         headless: true,
       };
     } catch (error) {
-      console.error('Chromium setup failed, using fallback:', error);
+      console.error(
+        'Chromium setup failed, trying alternative approach:',
+        error,
+      );
 
-      // Use system chromium as fallback
-      return {
-        args: [
-          '--disable-gpu',
-          '--disable-dev-shm-usage',
-          '--disable-setuid-sandbox',
-          '--no-first-run',
-          '--no-sandbox',
-          '--no-zygote',
-          '--single-process',
-          '--disable-extensions',
-          '--disable-background-timer-throttling',
-          '--disable-backgrounding-occluded-windows',
-          '--disable-renderer-backgrounding',
-        ],
-        executablePath: '/usr/bin/chromium-browser',
-        headless: true,
-      };
+      // Try alternative approach with minimal dependencies
+      try {
+        const executablePath = await chromium.executablePath();
+        return {
+          args: [
+            '--disable-gpu',
+            '--disable-dev-shm-usage',
+            '--disable-setuid-sandbox',
+            '--no-sandbox',
+            '--single-process',
+            '--no-zygote',
+            '--disable-extensions',
+          ],
+          executablePath,
+          headless: true,
+        };
+      } catch (fallbackError) {
+        console.error('All chromium approaches failed:', fallbackError);
+        throw new Error(
+          'Failed to initialize browser in serverless environment. Missing system dependencies.',
+        );
+      }
     }
   }
 
