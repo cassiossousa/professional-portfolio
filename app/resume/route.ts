@@ -1,16 +1,17 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
+import chromium from '@sparticuz/chromium';
+
 import { getAllEntries } from '../../lib/content';
 import { getDictionary } from '../../i18n/dictionaries';
 
 import { renderResumeData } from '../../lib/resume/renderResumeData';
+import { renderResumeHtml } from '../../lib/resume/renderResumeHtml';
 import { getCachedPdf, setCachedPdf } from '../../lib/resume/pdfCache';
-import { getBrowserConfig } from '../../lib/resume/browserConfig';
 
 import { Locale } from '../../i18n/types';
 import { mapContentToWorkRoles } from '../../lib/work/workModel';
-import { renderResumeHtml } from '../../lib/resume/renderResumeHtml';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -26,6 +27,7 @@ export async function GET() {
   const data = renderResumeData(roles, t);
 
   const cachedPdf = getCachedPdf(data, locale);
+
   if (cachedPdf) {
     return new NextResponse(new Uint8Array(cachedPdf), {
       headers: {
@@ -40,16 +42,24 @@ export async function GET() {
   let browser;
 
   try {
-    const browserConfig = await getBrowserConfig();
+    const isVercel = !!process.env.VERCEL;
 
-    const puppeteer = process.env.VERCEL
+    const puppeteer = isVercel
       ? await import('puppeteer-core')
       : await import('puppeteer');
 
-    browser = await puppeteer.launch({
-      ...browserConfig,
-      timeout: 60000,
-    });
+    browser = await puppeteer.launch(
+      isVercel
+        ? {
+            args: chromium.args,
+            executablePath: await chromium.executablePath(),
+            headless: true,
+            timeout: 60000,
+          }
+        : {
+            headless: true,
+          },
+    );
 
     const page = await browser.newPage();
 
