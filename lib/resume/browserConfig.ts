@@ -12,20 +12,46 @@ export async function getBrowserConfig(): Promise<BrowserConfig> {
 
   if (isVercel) {
     // Vercel serverless environment
-    return {
-      args: [
-        ...chromium.args,
-        '--disable-gpu',
-        '--disable-dev-shm-usage',
-        '--disable-setuid-sandbox',
-        '--no-first-run',
-        '--no-sandbox',
-        '--no-zygote',
-        '--single-process',
-      ],
-      executablePath: await chromium.executablePath(),
-      headless: true,
-    };
+    try {
+      // Get chromium executable path
+      const executablePath = await chromium.executablePath();
+
+      return {
+        args: [
+          ...chromium.args,
+          '--disable-gpu',
+          '--disable-dev-shm-usage',
+          '--disable-setuid-sandbox',
+          '--no-first-run',
+          '--no-sandbox',
+          '--no-zygote',
+          '--single-process',
+        ],
+        executablePath,
+        headless: true,
+      };
+    } catch (error) {
+      console.error('Chromium setup failed, using fallback:', error);
+
+      // Use system chromium as fallback
+      return {
+        args: [
+          '--disable-gpu',
+          '--disable-dev-shm-usage',
+          '--disable-setuid-sandbox',
+          '--no-first-run',
+          '--no-sandbox',
+          '--no-zygote',
+          '--single-process',
+          '--disable-extensions',
+          '--disable-background-timer-throttling',
+          '--disable-backgrounding-occluded-windows',
+          '--disable-renderer-backgrounding',
+        ],
+        executablePath: '/usr/bin/chromium-browser',
+        headless: true,
+      };
+    }
   }
 
   if (isLocalDev) {

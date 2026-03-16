@@ -20,8 +20,12 @@ import chromium from '@sparticuz/chromium';
 
 // Set graphics mode for serverless environments
 if (process.env.VERCEL) {
-  // @ts-ignore - setGraphicsMode is not in the type definitions but is available at runtime
-  chromium.setGraphicsMode = false;
+  try {
+    // @ts-ignore - setGraphicsMode is not in the type definitions but is available at runtime
+    chromium.setGraphicsMode = false;
+  } catch (error) {
+    console.warn('Failed to set chromium graphics mode:', error);
+  }
 }
 
 export const runtime = 'nodejs';
