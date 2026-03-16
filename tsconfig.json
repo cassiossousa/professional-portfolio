@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     "next.config.mjs",
-    "postcss.config.mjs"
+    "postcss.config.mjs",
+    "scripts/sync-github-projects.mjs"
   ],
   "exclude": ["node_modules"]
 }

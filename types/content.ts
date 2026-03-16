@@ -10,10 +10,19 @@ export interface BaseFrontmatter {
   location?: string;
 }
 
-export interface ContentEntry {
+export interface ProjectFrontmatter extends BaseFrontmatter {
+  repo?: string;
+  demo?: string;
+  stars?: number;
+  stack?: string[];
+}
+
+export interface ContentEntry<T extends BaseFrontmatter = BaseFrontmatter> {
   slug: string;
   type: ContentType;
-  frontmatter: BaseFrontmatter;
+  frontmatter: T;
   content: string;
   readingTime?: number;
 }
+
+export type ProjectEntry = ContentEntry<ProjectFrontmatter>;
