@@ -9,7 +9,7 @@ export interface BrowserConfig {
 export async function getBrowserConfig(): Promise<BrowserConfig> {
   const isVercel = !!process.env.VERCEL;
   const isLocalDev = process.env.NODE_ENV === 'development';
-  
+
   if (isVercel) {
     // Vercel serverless environment
     return {
@@ -18,7 +18,7 @@ export async function getBrowserConfig(): Promise<BrowserConfig> {
       headless: true,
     };
   }
-  
+
   if (isLocalDev) {
     // Local development - try to find Chrome automatically
     const localChromePath = await findLocalChrome();
@@ -30,7 +30,7 @@ export async function getBrowserConfig(): Promise<BrowserConfig> {
       };
     }
   }
-  
+
   // Fallback to system Chrome (cross-platform)
   const systemChromePath = getSystemChromePath();
   if (systemChromePath) {
@@ -40,9 +40,9 @@ export async function getBrowserConfig(): Promise<BrowserConfig> {
       headless: true,
     };
   }
-  
+
   throw new Error(
-    'Chrome/Chromium not found. Please install Chrome or set CHROME_PATH environment variable.'
+    'Chrome/Chromium not found. Please install Chrome or set CHROME_PATH environment variable.',
   );
 }
 
@@ -59,7 +59,7 @@ async function findLocalChrome(): Promise<string | null> {
     '/usr/bin/chromium-browser',
     '/usr/bin/chromium',
   ];
-  
+
   for (const path of possiblePaths) {
     try {
       // Check if file exists (simplified check)
@@ -70,7 +70,7 @@ async function findLocalChrome(): Promise<string | null> {
       continue;
     }
   }
-  
+
   return null;
 }
 
@@ -80,7 +80,7 @@ function getSystemChromePath(): string | null {
   if (envPath) {
     return envPath;
   }
-  
+
   // Default to 'chrome' or 'google-chrome' command
   return process.platform === 'win32' ? 'chrome' : 'google-chrome';
 }
