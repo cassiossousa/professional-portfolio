@@ -13,7 +13,16 @@ export async function getBrowserConfig(): Promise<BrowserConfig> {
   if (isVercel) {
     // Vercel serverless environment
     return {
-      args: chromium.args,
+      args: [
+        ...chromium.args,
+        '--disable-gpu',
+        '--disable-dev-shm-usage',
+        '--disable-setuid-sandbox',
+        '--no-first-run',
+        '--no-sandbox',
+        '--no-zygote',
+        '--single-process',
+      ],
       executablePath: await chromium.executablePath(),
       headless: true,
     };

@@ -15,6 +15,15 @@ import { Locale } from '../../i18n/types';
 
 import { mapContentToWorkRoles } from '../../lib/work/workModel';
 
+// Initialize chromium for serverless environments
+import chromium from '@sparticuz/chromium';
+
+// Set graphics mode for serverless environments
+if (process.env.VERCEL) {
+  // @ts-ignore - setGraphicsMode is not in the type definitions but is available at runtime
+  chromium.setGraphicsMode = false;
+}
+
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
