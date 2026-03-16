@@ -2,7 +2,13 @@
   "functions": {
     "app/resume/route.ts": {
       "maxDuration": 60,
-      "memory": 1024
+      "memory": 1024,
+      "runtime": "nodejs18.x"
+    }
+  },
+  "build": {
+    "env": {
+      "CHROMIUM_PATH": "1"
     }
   }
 }

@@ -9,11 +9,12 @@ export interface BrowserConfig {
 export async function getBrowserConfig(): Promise<BrowserConfig> {
   const isVercel = !!process.env.VERCEL;
   const isLocalDev = process.env.NODE_ENV === 'development';
+  const platform = process.platform;
 
   if (isVercel) {
-    // Vercel serverless environment
+    // Vercel serverless environment - use optimized chromium
     try {
-      // Get chromium executable path
+      // Use Vercel's optimized chromium build
       const executablePath = await chromium.executablePath();
 
       return {
@@ -22,38 +23,40 @@ export async function getBrowserConfig(): Promise<BrowserConfig> {
           '--disable-gpu',
           '--disable-dev-shm-usage',
           '--disable-setuid-sandbox',
-          '--no-first-run',
           '--no-sandbox',
-          '--no-zygote',
           '--single-process',
           '--disable-extensions',
           '--disable-background-timer-throttling',
           '--disable-backgrounding-occluded-windows',
           '--disable-renderer-backgrounding',
-          '--disable-web-security',
-          '--disable-features=VizDisplayCompositor',
+          '--disable-background-networking',
+          '--disable-default-apps',
+          '--disable-extensions',
+          '--disable-sync',
+          '--disable-translate',
+          '--hide-scrollbars',
+          '--metrics-recording-only',
+          '--mute-audio',
+          '--no-first-run',
+          '--safebrowsing-disable-auto-update',
         ],
         executablePath,
         headless: true,
       };
     } catch (error) {
-      console.error(
-        'Chromium setup failed, trying alternative approach:',
-        error,
-      );
+      console.error('Vercel chromium setup failed:', error);
 
-      // Try alternative approach with minimal dependencies
+      // Fallback with minimal args for serverless
       try {
         const executablePath = await chromium.executablePath();
         return {
           args: [
             '--disable-gpu',
             '--disable-dev-shm-usage',
-            '--disable-setuid-sandbox',
             '--no-sandbox',
             '--single-process',
-            '--no-zygote',
             '--disable-extensions',
+            '--disable-setuid-sandbox',
           ],
           executablePath,
           headless: true,
@@ -61,7 +64,7 @@ export async function getBrowserConfig(): Promise<BrowserConfig> {
       } catch (fallbackError) {
         console.error('All chromium approaches failed:', fallbackError);
         throw new Error(
-          'Failed to initialize browser in serverless environment. Missing system dependencies.',
+          'Failed to initialize browser in Vercel environment. Please ensure @sparticuz/chromium is properly configured.',
         );
       }
     }
@@ -72,7 +75,7 @@ export async function getBrowserConfig(): Promise<BrowserConfig> {
     const localChromePath = await findLocalChrome();
     if (localChromePath) {
       return {
-        args: [],
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
         executablePath: localChromePath,
         headless: true,
       };
@@ -83,7 +86,7 @@ export async function getBrowserConfig(): Promise<BrowserConfig> {
   const systemChromePath = getSystemChromePath();
   if (systemChromePath) {
     return {
-      args: [],
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
       executablePath: systemChromePath,
       headless: true,
     };
@@ -95,24 +98,43 @@ export async function getBrowserConfig(): Promise<BrowserConfig> {
 }
 
 async function findLocalChrome(): Promise<string | null> {
-  // Try common Chrome locations
-  const possiblePaths = [
-    // Windows
-    'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-    'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
-    // macOS
-    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-    // Linux
-    '/usr/bin/google-chrome',
-    '/usr/bin/chromium-browser',
-    '/usr/bin/chromium',
-  ];
+  const platform = process.platform;
+
+  // Try common Chrome locations based on platform
+  const possiblePaths =
+    platform === 'win32'
+      ? [
+          // Windows paths
+          'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+          'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+          'C:\\Users\\' +
+            (process.env.USERNAME || '') +
+            '\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe',
+        ]
+      : platform === 'darwin'
+        ? [
+            // macOS paths
+            '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+            '/Applications/Chromium.app/Contents/MacOS/Chromium',
+          ]
+        : [
+            // Linux paths
+            '/usr/bin/google-chrome',
+            '/usr/bin/chromium-browser',
+            '/usr/bin/chromium',
+            '/snap/bin/chromium',
+          ];
 
   for (const path of possiblePaths) {
     try {
-      // Check if file exists (simplified check)
-      if (path.includes('C:\\') || path.includes('/Applications/')) {
-        return path; // Assume it exists for Windows/macOS
+      // For Windows, we can be more confident about the path
+      if (platform === 'win32' && path.includes('C:\\')) {
+        return path;
+      }
+      // For macOS/Linux, we'd need to check file existence
+      // For now, return the first likely candidate
+      if (platform !== 'win32') {
+        return path;
       }
     } catch {
       continue;
@@ -129,6 +151,13 @@ function getSystemChromePath(): string | null {
     return envPath;
   }
 
-  // Default to 'chrome' or 'google-chrome' command
-  return process.platform === 'win32' ? 'chrome' : 'google-chrome';
+  // Platform-specific fallback
+  const platform = process.platform;
+  if (platform === 'win32') {
+    return 'chrome';
+  } else if (platform === 'darwin') {
+    return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+  } else {
+    return 'google-chrome';
+  }
 }

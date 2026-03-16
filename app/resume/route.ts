@@ -28,6 +28,16 @@ if (process.env.VERCEL) {
   }
 }
 
+// Initialize chromium for local development
+if (process.env.NODE_ENV === 'development') {
+  try {
+    // @ts-ignore - setGraphicsMode is not in the type definitions but is available at runtime
+    chromium.setGraphicsMode = false;
+  } catch (error) {
+    console.warn('Failed to set chromium graphics mode for local dev:', error);
+  }
+}
+
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
