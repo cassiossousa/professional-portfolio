@@ -6,6 +6,10 @@ const withMDX = createMDX({
 
 const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'mdx'],
+  serverExternalPackages: ['@sparticuz/chromium', 'puppeteer-core'],
+  outputFileTracingIncludes: {
+    '/app/resume/route': ['./node_modules/@sparticuz/chromium/bin/**'],
+  },
 };
 
 export default withMDX(nextConfig);
