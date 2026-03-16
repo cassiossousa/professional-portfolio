@@ -19,9 +19,10 @@ export function renderResumeData(
   roles: ContentEntry[],
   t: Translation,
 ): ResumeData {
-  const formattedRoles: ResumeRole[] = roles
-    .filter((role) => role.frontmatter.company && role.frontmatter.role)
-    .map((role) => {
+  return {
+    summary: t.resume.summary,
+
+    roles: roles.map((role) => {
       const { company, role: title, location, start, end } = role.frontmatter;
       const period = end ? `${start} - ${end}` : `${start} - ${t.work.present}`;
       const bullets = role.content
@@ -30,17 +31,14 @@ export function renderResumeData(
         .filter(Boolean);
 
       return {
-        company: company!,
-        title: title!,
-        location,
+        company: company || '',
+        title: title || '',
+        location: location || '',
         period,
         bullets,
       };
-    });
+    }),
 
-  return {
-    summary: t.resume.summary,
-    roles: formattedRoles,
     languages: [t.resume.languages.portuguese, t.resume.languages.english],
   };
 }
