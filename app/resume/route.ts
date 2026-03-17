@@ -12,6 +12,7 @@ import { getCachedPdf, setCachedPdf } from '../../lib/resume/pdfCache';
 
 import { Locale } from '../../i18n/types';
 import { mapContentToWorkRoles } from '../../lib/work-experience/workModel';
+import dayjs from 'dayjs';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -26,13 +27,18 @@ export async function GET() {
 
   const data = renderResumeData(roles, t);
 
+  // Generate timestamp up to minutes
+  const normalizedLocale = locale.replace('-', '');
+  const timestamp = dayjs().format('YYYY_MM_DD_HHmm');
+  const filename = `CV_${normalizedLocale}_Cassio_dos_Santos_Sousa_${timestamp}.pdf`;
+
   const cachedPdf = getCachedPdf(data, locale);
 
   if (cachedPdf) {
     return new NextResponse(new Uint8Array(cachedPdf), {
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'inline; filename="resume.pdf"',
+        'Content-Disposition': `inline; filename="${filename}"`,
       },
     });
   }
@@ -70,6 +76,7 @@ export async function GET() {
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
+      displayHeaderFooter: false,
       margin: {
         top: '40px',
         bottom: '40px',
@@ -83,7 +90,7 @@ export async function GET() {
     return new NextResponse(new Uint8Array(pdfBuffer), {
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'inline; filename="resume.pdf"',
+        'Content-Disposition': `inline; filename="${filename}"`,
       },
     });
   } catch (error) {

@@ -39,12 +39,20 @@ export function renderResumeHtml(data: ResumeData, t: Translation) {
     )
     .join('');
 
+  const pageTitle = `${t.home.name} - CV`;
+
   return `
 <!DOCTYPE html>
 <html>
 <head>
 
 <meta charset="utf-8" />
+
+<title>${escapeHtml(pageTitle)}</title>
+
+<meta name="description" content="${escapeHtml(
+    `${t.home.name} - ${t.home.title}`,
+  )}" />
 
 <style>
 
@@ -63,6 +71,7 @@ h1 {
 h2 {
   margin-top: 24px;
   font-size: 18px;
+  page-break-after: avoid;
 }
 
 /* --- ROLE BLOCK --- */
@@ -71,14 +80,10 @@ h2 {
   margin-bottom: 14px;
 }
 
-/* keep company/title/meta together */
-
 .role-header {
   break-inside: avoid;
   page-break-inside: avoid;
 }
-
-/* keep bullet list together */
 
 .role-bullets {
   break-inside: avoid;
@@ -103,8 +108,6 @@ ul {
   margin: 6px 0 0 0;
   padding: 0 0 0 24px;
 }
-
-/* avoid bullet splitting */
 
 li {
   font-size: 12px;
