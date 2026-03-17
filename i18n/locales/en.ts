@@ -3,7 +3,7 @@ import { defineMessages, Translation } from '../types';
 const en: Translation = {
   home: {
     name: 'Cássio dos Santos Sousa',
-    title: 'Software Engineer',
+    title: 'Senior Software Engineer',
     subtitle: 'Frontend Architecture • Large-Scale Web Platforms',
   },
 
@@ -36,8 +36,8 @@ const en: Translation = {
     languagesTitle: 'Languages',
 
     languages: {
-      portuguese: 'Portuguese — Native',
-      english: 'English — Fluent',
+      portuguese: 'Portuguese - Native',
+      english: 'English - Fluent',
     },
   },
 

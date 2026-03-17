@@ -1,11 +1,5 @@
 export const profile = {
-  name: 'Cássio dos Santos Sousa',
-
-  title:
-    'Senior Fullstack Engineer | React, TypeScript, Python, Large-Scale Web Applications',
-
   location: 'São Paulo - SP, Brazil',
-
   links: {
     linkedin: 'https://linkedin.com/in/cassiossousa',
     github: 'https://github.com/cassiossousa',

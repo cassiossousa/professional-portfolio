@@ -15,8 +15,8 @@ export function renderResumeData(
   t: Translation,
 ): ResumeData {
   return {
-    name: profile.name,
-    title: profile.title,
+    name: t.home.name,
+    title: t.home.title + ' | ' + t.home.subtitle,
     summary: t.resume.summary,
     roles,
     languages: [t.resume.languages.portuguese, t.resume.languages.english],

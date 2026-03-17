@@ -17,15 +17,23 @@ export function renderResumeHtml(data: ResumeData, t: Translation) {
     .map(
       (r) => `
       <div class="role">
-        <h3>${escapeHtml(r.company)}</h3>
-        <div class="title">${escapeHtml(r.title)}</div>
-        <div class="meta">
-          ${r.location ? `${escapeHtml(r.location)} | ` : ''}${escapeHtml(r.period)}
+
+        <div class="role-header">
+          <h3 class="company">${escapeHtml(r.company)}</h3>
+
+          <div class="title">${escapeHtml(r.title)}</div>
+
+          <div class="meta">
+            ${r.location ? `${escapeHtml(r.location)} | ` : ''}${escapeHtml(r.period)}
+          </div>
         </div>
 
-        <ul>
-          ${r.bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join('')}
-        </ul>
+        <div class="role-bullets">
+          <ul>
+            ${r.bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join('')}
+          </ul>
+        </div>
+
       </div>
     `,
     )
@@ -57,8 +65,28 @@ h2 {
   font-size: 18px;
 }
 
+/* --- ROLE BLOCK --- */
+
 .role {
   margin-bottom: 14px;
+}
+
+/* keep company/title/meta together */
+
+.role-header {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* keep bullet list together */
+
+.role-bullets {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.company {
+  margin-bottom: 0;
 }
 
 .title {
@@ -72,7 +100,17 @@ h2 {
 }
 
 ul {
-  margin: 6px 0 0 18px;
+  margin: 6px 0 0 0;
+  padding: 0 0 0 24px;
+}
+
+/* avoid bullet splitting */
+
+li {
+  font-size: 12px;
+  text-align: justify;
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
 
 </style>
@@ -81,8 +119,9 @@ ul {
 
 <body>
 
-<h1>${escapeHtml(data.name)}</h1>
-<div>${escapeHtml(data.title)}</div>
+<h1>${escapeHtml(t.home.name)}</h1>
+
+<div>${escapeHtml(t.home.title)} | ${escapeHtml(t.home.subtitle)}</div>
 
 <h2>${escapeHtml(t.resume.summaryTitle)}</h2>
 <p>${escapeHtml(data.summary)}</p>
@@ -92,6 +131,7 @@ ul {
 ${rolesHtml}
 
 <h2>${escapeHtml(t.resume.languagesTitle)}</h2>
+
 <ul>
 ${data.languages.map((l) => `<li>${escapeHtml(l)}</li>`).join('')}
 </ul>
