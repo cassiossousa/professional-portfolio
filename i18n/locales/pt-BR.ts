@@ -1,10 +1,11 @@
-import { defineMessages, Translation } from '../types';
+import { defineMessages, Translation, yearsSince } from '../types';
 
 const pt: Translation = {
   home: {
     name: 'Cássio dos Santos Sousa',
     title: 'Engenheiro de Software Sênior',
     subtitle: 'Arquitetura Frontend • Plataformas Web de Grande Escala',
+    username: 'cassiossousa',
   },
 
   workExperience: {
@@ -21,14 +22,12 @@ const pt: Translation = {
     distributed: 'Sistemas Distribuídos',
     cloud: 'Cloud & Infraestrutura',
     testing: 'Testes & Observabilidade',
-    practices: 'Práticas de Engenharia',
   },
 
   resume: {
     summaryTitle: 'Resumo Profissional',
 
-    summary:
-      'Engenheiro de Software Sênior com mais de 10 anos de experiência desenvolvendo aplicações web de grande escala utilizando React, TypeScript e arquiteturas modernas de frontend.',
+    summary: `Engenheiro de Software Sênior formado no Instituto Tecnológico de Aeronáutica (ITA) com mais de ${yearsSince(2016)} anos de experiência no desenvolvimento de plataformas SaaS, sistemas distribuídos e aplicações de grande escala. Experiência no desenvolvimento de APIs, microsserviços e arquiteturas resilientes em ambientes cloud. Atuação em todo o ciclo de desenvolvimento: definição de arquitetura, implementação, observabilidade, manutenção em produção e evolução contínua de sistemas críticos. Experiência com Java, Node.js e Python no desenvolvimento de serviços backend e integração entre sistemas. Forte atuação em qualidade de código, boas práticas de engenharia, escalabilidade e confiabilidade de sistemas.`,
 
     experienceTitle: 'Experiência Profissional',
 

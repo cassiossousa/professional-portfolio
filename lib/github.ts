@@ -2,9 +2,11 @@ import type { GitHubRepo } from '../types/github';
 
 const USERNAME = 'cassiossousa';
 
-export async function getRepos(): Promise<GitHubRepo[]> {
+export async function getRepos(
+  username: string = USERNAME,
+): Promise<GitHubRepo[]> {
   const res = await fetch(
-    `https://api.github.com/users/${USERNAME}/repos?per_page=100`,
+    `https://api.github.com/users/${username}/repos?per_page=100`,
     {
       headers: {
         Accept:
@@ -23,9 +25,12 @@ export async function getRepos(): Promise<GitHubRepo[]> {
   return repos;
 }
 
-export async function getRepoReadme(repo: string): Promise<string | null> {
+export async function getRepoReadme(
+  repo: string,
+  username: string = USERNAME,
+): Promise<string | null> {
   const res = await fetch(
-    `https://api.github.com/repos/${USERNAME}/${repo}/readme`,
+    `https://api.github.com/repos/${username}/${repo}/readme`,
     {
       headers: {
         Accept: 'application/vnd.github.raw',

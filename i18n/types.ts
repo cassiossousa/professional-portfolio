@@ -10,6 +10,7 @@ export interface Translation {
     name: string;
     title: string;
     subtitle: string;
+    username: string;
   };
 
   workExperience: {
@@ -26,7 +27,6 @@ export interface Translation {
     distributed: string;
     cloud: string;
     testing: string;
-    practices: string;
   };
 
   resume: {
@@ -53,7 +53,11 @@ export interface Translation {
   };
 }
 
-// Optional: helper for type inference
 export function defineMessages(messages: Translation) {
   return messages;
+}
+
+export function yearsSince(givenYear: number): number {
+  const currentYear = new Date().getFullYear();
+  return currentYear - givenYear;
 }

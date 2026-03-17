@@ -40,7 +40,7 @@ export function getSlugs(type: ContentType) {
   const dir = getDir(type);
 
   return fs
-    .readdirSync(dir)
+    .readdirSync(dir, 'utf8')
     .filter((file) => file.endsWith('.mdx'))
     .filter((file) => file.split('.').length === 2)
     .map((file) => file.replace('.mdx', ''));
@@ -76,7 +76,7 @@ export function getAllEntries(type: ContentType, locale: string) {
   const dir = getDir(type);
 
   const files = fs
-    .readdirSync(dir)
+    .readdirSync(dir, 'utf8')
     .filter((file) => file.endsWith('.mdx'))
     // Keep only files for the current locale or base files
     .filter((file) => {

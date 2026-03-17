@@ -23,7 +23,7 @@ export async function getProjects(locale: Locale): Promise<Project[]> {
   const repos = await getRepos().catch(() => null);
 
   if (repos) {
-    const featured = repos.filter((r: any) => r.topics?.includes('featured'));
+    const featured = repos.filter((r) => r.topics?.includes('featured'));
 
     if (featured.length) {
       return featured.map(normalizeGithubRepo);
@@ -41,7 +41,7 @@ export async function getProject(
   const repos = await getRepos().catch(() => null);
 
   if (repos) {
-    const repo = repos.find((r: any) => r.name === slug);
+    const repo = repos.find((r) => r.name === slug);
 
     if (repo) {
       const project = normalizeGithubRepo(repo);

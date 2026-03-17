@@ -2,14 +2,29 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { getEntry, getSlugs, getAllEntries } from './content';
-import { ContentType } from '../types/content';
+
+// Type for gray-matter result
+interface GrayMatterResult {
+  content: string;
+  data: Record<string, any>;
+  orig: string;
+  language: string;
+  matter: string;
+  stringify: jest.MockedFunction<() => string>;
+  excerpt: string;
+  isEmpty: boolean;
+}
 
 // Mock modules
 jest.mock('fs');
 jest.mock('path');
 jest.mock('gray-matter');
 
-const mockFs = fs as jest.Mocked<typeof fs>;
+const mockFs = fs as jest.Mocked<typeof fs> & {
+  readdirSync: jest.MockedFunction<
+    (path: string, encoding?: 'utf8') => string[]
+  >;
+};
 const mockPath = path as jest.Mocked<typeof path>;
 const mockMatter = matter as jest.MockedFunction<typeof matter>;
 
@@ -37,7 +52,7 @@ describe('content.ts', () => {
       stringify: jest.fn(),
       excerpt: '',
       isEmpty: false,
-    } as any);
+    } as GrayMatterResult);
   });
 
   describe('getSlugs', () => {
@@ -51,7 +66,7 @@ describe('content.ts', () => {
         'job4.mdx',
       ];
 
-      mockFs.readdirSync.mockReturnValue(mockFiles as any);
+      mockFs.readdirSync.mockReturnValue(mockFiles);
 
       // Act
       const result = getSlugs('work-experience');
@@ -90,7 +105,7 @@ describe('content.ts', () => {
       stringify: jest.fn(),
       excerpt: '',
       isEmpty: false,
-    } as any;
+    } as GrayMatterResult;
 
     it('should return content entry for English locale', () => {
       // Arrange
@@ -189,7 +204,7 @@ describe('content.ts', () => {
         stringify: jest.fn(),
         excerpt: '',
         isEmpty: false,
-      } as any;
+      } as GrayMatterResult;
 
       mockFs.existsSync.mockReturnValue(true);
       mockFs.readFileSync.mockReturnValue(
@@ -213,9 +228,11 @@ describe('content.ts', () => {
     it('should return all entries for a content type and locale', () => {
       // Arrange
       const mockFiles = ['job1.mdx', 'job2.mdx', 'job3.mdx'];
-      mockFs.readdirSync.mockReturnValue(mockFiles as any);
+      mockFs.readdirSync.mockReturnValue(mockFiles);
       mockFs.existsSync.mockReturnValue(true);
-      mockFs.readFileSync.mockReturnValue('---\ntitle: Test\n---\n# Content');
+      mockFs.readFileSync.mockReturnValue(
+        Buffer.from('---\ntitle: Test\n---\n# Content', 'utf8'),
+      );
       mockMatter.mockReturnValue({
         content: '# Content',
         data: { title: 'Test' },
@@ -224,8 +241,7 @@ describe('content.ts', () => {
         matter: '',
         stringify: jest.fn(),
         excerpt: '',
-        isEmpty: false,
-      } as any);
+      });
 
       // Act
       const result = getAllEntries('work-experience', 'en');

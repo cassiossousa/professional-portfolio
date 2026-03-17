@@ -1,17 +1,14 @@
-export const profile = {
-  location: 'São Paulo - SP, Brazil',
-  links: {
-    linkedin: 'https://linkedin.com/in/cassiossousa',
-    github: 'https://github.com/cassiossousa',
-  },
-};
+import { Translation } from '../i18n/types';
 
-export const skills = {
+export const skills: {
+  [s in keyof Omit<Translation['skills'], 'title'>]: string[];
+} = {
   frontend: [
     'React',
     'TypeScript',
     'JavaScript',
     'Angular',
+    'Next.js',
     'React Native',
     'Material UI',
     'Styled Components',
@@ -19,10 +16,10 @@ export const skills = {
 
   backend: [
     'Node.js',
-    'NestJS',
     'Python',
     'Django',
     'Flask',
+    'Pyramid',
     'Ruby on Rails',
     'Java',
     'Spring Boot',
@@ -30,25 +27,19 @@ export const skills = {
 
   databases: ['PostgreSQL', 'MongoDB', 'Redis', 'DynamoDB', 'Elasticsearch'],
 
-  distributed: ['Kafka', 'RabbitMQ', 'GraphQL', 'Event-Driven Architecture'],
+  distributed: ['Kafka', 'RabbitMQ', 'GraphQL'],
 
   cloud: ['Docker', 'Kubernetes', 'AWS', 'GCP', 'Heroku', 'CI/CD'],
 
   testing: [
-    'Jest',
-    'Mocha',
     'Cypress',
-    'Pytest',
-    'Grafana',
-    'Kibana',
     'Datadog',
+    'Grafana',
+    'Jest',
+    'Kibana',
+    'Mocha',
+    'Pytest',
     'Sentry',
-  ],
-
-  practices: [
-    'SOLID',
-    'Clean Architecture',
-    'Microservices',
-    'Performance Optimization',
+    'Vitest',
   ],
 };
