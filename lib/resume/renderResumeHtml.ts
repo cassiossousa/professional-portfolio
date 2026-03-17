@@ -58,7 +58,7 @@ export function renderResumeHtml(data: ResumeData, t: Translation) {
 
 body {
   font-family: system-ui, -apple-system, sans-serif;
-  margin: 40px;
+  margin: 30px 20px;
   font-size: 13px;
   line-height: 1.5;
 }

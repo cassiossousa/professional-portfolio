@@ -78,10 +78,10 @@ export async function GET() {
       printBackground: true,
       displayHeaderFooter: false,
       margin: {
-        top: '40px',
-        bottom: '40px',
-        left: '40px',
-        right: '40px',
+        top: '30px',
+        bottom: '30px',
+        left: '20px',
+        right: '20px',
       },
     });
 
