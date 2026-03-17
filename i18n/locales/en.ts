@@ -5,8 +5,6 @@ const en: Translation = {
     name: 'Cássio dos Santos Sousa',
     title: 'Software Engineer',
     subtitle: 'Frontend Architecture • Large-Scale Web Platforms',
-    description:
-      'Senior Software Engineer with 10+ years building high-traffic web platforms using React, TypeScript, and modern frontend architectures.',
   },
 
   workExperience: {

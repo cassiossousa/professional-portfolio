@@ -10,7 +10,6 @@ export interface Translation {
     name: string;
     title: string;
     subtitle: string;
-    description: string;
   };
 
   workExperience: {

@@ -5,8 +5,6 @@ const pt: Translation = {
     name: 'Cássio dos Santos Sousa',
     title: 'Engenheiro de Software',
     subtitle: 'Arquitetura Frontend • Plataformas Web de Grande Escala',
-    description:
-      'Engenheiro de Software Sênior com mais de 10 anos de experiência desenvolvendo aplicações web de grande escala com React, TypeScript e arquiteturas modernas.',
   },
 
   workExperience: {
@@ -17,7 +15,6 @@ const pt: Translation = {
 
   skills: {
     title: 'Competências Técnicas',
-
     frontend: 'Frontend',
     backend: 'Backend',
     databases: 'Bancos de Dados',

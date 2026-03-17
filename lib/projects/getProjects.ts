@@ -31,7 +31,6 @@ export async function getProjects(locale: Locale): Promise<Project[]> {
   }
 
   const entries = (await getAllEntries('projects', locale)) as ProjectEntry[];
-
   return entries.map(fromProjectEntry);
 }
 
@@ -46,11 +45,8 @@ export async function getProject(
 
     if (repo) {
       const project = normalizeGithubRepo(repo);
-
       const readme = await getRepoReadme(repo.name);
-
       if (readme) project.readme = readme;
-
       return project;
     }
   }

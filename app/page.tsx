@@ -12,7 +12,7 @@ export default async function HomePage() {
       <h1>{t.home.name}</h1>
       <h2>{t.home.title}</h2>
       <p className="text-xl mt-2">{t.home.subtitle}</p>
-      <p className="mt-4 max-w-xl">{t.home.description}</p>
+      <p className="mt-4 max-w-xl">{t.resume.summary}</p>
     </section>
   );
 }
