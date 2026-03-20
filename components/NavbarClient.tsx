@@ -17,6 +17,7 @@ export default function NavbarClient({ t }: NavbarClientProps) {
     { href: '/', label: 'Home' },
     { href: '/work-experience', label: t.workExperience.title },
     { href: '/projects', label: t.projects.title },
+    { href: '/resume', label: t.resume.title, target: '_blank' },
   ];
 
   return (
@@ -24,8 +25,14 @@ export default function NavbarClient({ t }: NavbarClientProps) {
       {/* Desktop nav */}
       <div className="hidden md:flex gap-6">
         {links.map((link) => (
-          <Link key={link.href} href={link.href} className="hover:underline">
+          <Link
+            key={link.href}
+            href={link.href}
+            {...(link.target && { target: link.target })}
+            className="hover:underline"
+          >
             {link.label}
+            {link.target && <span className="ml-1">↗</span>}
           </Link>
         ))}
       </div>

@@ -47,7 +47,22 @@ export function renderResumeHtml(data: ResumeData, t: Translation) {
     )
     .join('');
 
-  const pageTitle = `${t.home.name} - CV`;
+  const contacts = [
+    // Future-ready fields:
+    // t.home.location && escapeHtml(t.home.location),
+    // t.home.email && `<a href="mailto:${escapeHtml(t.home.email)}">${escapeHtml(t.home.email)}</a>`,
+    // t.home.phone && escapeHtml(t.home.phone),
+
+    `<a href="https://github.com/${escapeHtml(t.home.username)}">github.com/${escapeHtml(
+      t.home.username,
+    )}</a>`,
+
+    `<a href="https://linkedin.com/in/${escapeHtml(
+      t.home.username,
+    )}">linkedin.com/in/${escapeHtml(t.home.username)}</a>`,
+  ]
+    .filter(Boolean)
+    .join('<span class="separator">•</span>');
 
   return `
     <!DOCTYPE html>
@@ -55,7 +70,7 @@ export function renderResumeHtml(data: ResumeData, t: Translation) {
     <head>
       <meta charset="utf-8" />
 
-      <title>${escapeHtml(pageTitle)}</title>
+      <title>${escapeHtml(`${t.home.name} - CV`)}</title>
 
       <meta name="description" content="${escapeHtml(
         `${t.home.name} - ${t.home.title}`,
@@ -69,10 +84,46 @@ export function renderResumeHtml(data: ResumeData, t: Translation) {
           line-height: 1.5;
         }
 
+        /* --- HEADER --- */
+
+        .resume-header {
+          text-align: center;
+          margin-bottom: 18px;
+          page-break-inside: avoid;
+          break-inside: avoid;
+        }
+
         h1 {
           font-size: 28px;
           margin-bottom: 4px;
         }
+
+        .headline {
+          font-size: 14px;
+          font-weight: 500;
+          margin-bottom: 6px;
+        }
+
+        .contact {
+          font-size: 12px;
+          color: #444;
+        }
+
+        .contact a {
+          color: #000;
+          text-decoration: none;
+        }
+
+        .contact a:hover {
+          text-decoration: underline;
+        }
+
+        .separator {
+          margin: 0 6px;
+          color: #888;
+        }
+
+        /* --- SECTION TITLES --- */
 
         h2 {
           margin-top: 24px;
@@ -130,8 +181,17 @@ export function renderResumeHtml(data: ResumeData, t: Translation) {
     </head>
 
     <body>
-      <h1>${escapeHtml(t.home.name)}</h1>
-      <div>${escapeHtml(t.home.title)} | ${escapeHtml(t.home.subtitle)}</div>
+      <header class="resume-header">
+        <h1>${escapeHtml(t.home.name)}</h1>
+
+        <div class="headline">
+          ${escapeHtml(t.home.title)} • ${escapeHtml(t.home.subtitle)}
+        </div>
+
+        <div class="contact">
+          ${contacts}
+        </div>
+      </header>
 
       <h2>${escapeHtml(t.resume.summaryTitle)}</h2>
       <p class="summary">${escapeHtml(t.resume.summary)}</p>
@@ -150,7 +210,8 @@ export function renderResumeHtml(data: ResumeData, t: Translation) {
         .map((l) => `<li>${escapeHtml(l)}</li>`)
         .join('')}
       </ul>
+
     </body>
-  </html>
+    </html>
   `;
 }

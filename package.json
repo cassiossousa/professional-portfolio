@@ -2,6 +2,14 @@
   "name": "professional-portfolio",
   "private": true,
   "version": "0.0.1",
+  "author": {
+    "name": "Cássio dos Santos Sousa"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cassiossousa/professional-portfolio.git"
+  },
+  "homepage": "https://professional-portfolio-mu-gray.vercel.app/",
   "scripts": {
     "build": "next build",
     "dev": "next dev",

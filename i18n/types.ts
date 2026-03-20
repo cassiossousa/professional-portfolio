@@ -30,12 +30,11 @@ export interface Translation {
   };
 
   resume: {
+    title: string;
     summaryTitle: string;
     summary: string;
     experienceTitle: string;
-
     languagesTitle: string;
-
     languages: {
       portuguese: string;
       english: string;
