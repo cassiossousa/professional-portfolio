@@ -17,7 +17,6 @@ export default function NavbarClient({ t }: NavbarClientProps) {
     { href: '/', label: 'Home' },
     { href: '/work-experience', label: t.workExperience.title },
     { href: '/projects', label: t.projects.title },
-    { href: '/blog', label: t.blog.title },
   ];
 
   return (

@@ -111,28 +111,3 @@
       transition;
   }
 }
-
-/* -------------------------------- */
-/* Blog prose */
-/* -------------------------------- */
-
-.prose h1 {
-  @apply text-4xl font-bold;
-}
-
-.prose h2 {
-  @apply text-2xl font-semibold mt-10;
-}
-
-.prose p {
-  @apply mt-4;
-}
-
-.prose code {
-  background: #0f172a;
-  color: #e2e8f0;
-
-  padding: 0.2rem 0.4rem;
-
-  border-radius: 4px;
-}

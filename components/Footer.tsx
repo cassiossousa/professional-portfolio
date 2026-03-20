@@ -20,12 +20,6 @@ export default async function Footer() {
         <nav aria-label="Footer navigation">
           <ul className="flex gap-6 text-sm">
             <li>
-              <Link href="/blog" className="hover:underline">
-                Blog
-              </Link>
-            </li>
-
-            <li>
               <a
                 href={`https://github.com/${t.home.username}`}
                 target="_blank"

@@ -13,17 +13,8 @@ export const metadata: Metadata = {
     default: 'Cássio Sousa - Software Engineer',
     template: '%s | Cássio Sousa',
   },
-  description: 'Software engineering portfolio, projects and technical blog.',
-  alternates: {
-    types: {
-      'application/rss+xml': [
-        {
-          url: '/rss',
-          title: 'RSS Feed',
-        },
-      ],
-    },
-  },
+  description:
+    'Software engineering portfolio showcasing some of my more relevant projects.',
 };
 
 export default async function RootLayout({

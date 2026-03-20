@@ -44,12 +44,6 @@ const en: Translation = {
     description:
       'Selected projects demonstrating system design, frontend architecture, and scalable product development.',
   },
-
-  blog: {
-    title: 'Blog',
-    description:
-      'Articles and insights on web development, software architecture, and best practices.',
-  },
 };
 
 export default defineMessages(en);

@@ -44,12 +44,6 @@ const pt: Translation = {
     description:
       'Projetos selecionados demonstrando arquitetura de frontend, design de sistemas e desenvolvimento de produtos escaláveis.',
   },
-
-  blog: {
-    title: 'Blog',
-    description:
-      'Artigos e insights sobre desenvolvimento web, arquitetura de software e boas práticas.',
-  },
 };
 
 export default defineMessages(pt);

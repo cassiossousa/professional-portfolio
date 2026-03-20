@@ -46,11 +46,6 @@ export interface Translation {
     title: string;
     description: string;
   };
-
-  blog: {
-    title: string;
-    description: string;
-  };
 }
 
 export function defineMessages(messages: Translation) {

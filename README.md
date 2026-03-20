@@ -1,12 +1,11 @@
 # Professional Portfolio
 
-Professional portfolio and engineering blog.
+Professional portfolio.
 
 ## Stack
 
 - Next.js
 - TypeScript
-- MDX Blog
 - Tailwind
 - Jest
 - GitHub Actions
