@@ -64,6 +64,7 @@ Developer portfolio built with Next.js and TypeScript that automatically generat
 ## Quality
 
 - Unit tests with Jest
+- Component tests with @testing-library
 - Type-safe codebase with TypeScript
 - Linting and formatting with ESLint and Prettier
 
