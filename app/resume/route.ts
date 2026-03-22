@@ -76,7 +76,7 @@ export async function GET() {
     const launchOptions = isVercel
       ? {
           args: chromium.args,
-          executablePath: await chromium.executablePath('/tmp/chromium'),
+          executablePath: await chromium.executablePath(),
           headless: true,
           timeout: 60000,
         }
