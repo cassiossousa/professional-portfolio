@@ -1,6 +1,6 @@
 export type ContentType = 'work-experience' | 'projects';
 
-export interface BaseFrontmatter {
+interface BaseFrontmatter {
   title?: string;
   date?: string;
   start?: string;

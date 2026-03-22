@@ -15,6 +15,7 @@ function escapeHtml(text: string): string {
 }
 
 function renderProjects(
+  t: Translation,
   projects?: {
     title: string;
     technologies?: string[];
@@ -26,7 +27,7 @@ function renderProjects(
   if (!projects?.length) return '';
 
   return `
-    <h2>Projects</h2>
+    <h2>${t.projects.title}</h2>
 
     ${projects
       .map(
@@ -258,7 +259,7 @@ export function renderResumeHtml(
     <h2>${escapeHtml(t.resume.experienceTitle)}</h2>
     ${rolesHtml}
 
-    ${renderProjects(projects)}
+    ${renderProjects(t, projects)}
 
     <h2>${escapeHtml(t.skills.title)}</h2>
     <ul>${skillsHtml}</ul>

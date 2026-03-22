@@ -17,6 +17,33 @@ import dayjs from 'dayjs';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+async function launchBrowserWithRetry(
+  puppeteer: any,
+  options: any,
+  retries = 3,
+) {
+  let lastError;
+
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await puppeteer.launch(options);
+    } catch (err: any) {
+      lastError = err;
+
+      const message = String(err?.message || err);
+
+      if (!message.includes('ETXTBSY')) {
+        throw err;
+      }
+
+      // wait briefly before retrying
+      await new Promise((resolve) => setTimeout(resolve, 300));
+    }
+  }
+
+  throw lastError;
+}
+
 export async function GET() {
   const cookieStore = await cookies();
   const locale = (cookieStore.get('lang')?.value as Locale) ?? 'en';
@@ -24,14 +51,17 @@ export async function GET() {
   const t = await getDictionary(locale);
   const entries = await getAllEntries('work-experience', locale);
   const roles = mapContentToWorkRoles(entries, t);
+
   const projects = await getProjects(locale);
   const resumeProjects = projects.filter((p) => p.topics?.includes('resume'));
+
   const data = renderResumeData(roles, t);
 
   // Generate timestamp up to minutes
   const normalizedLocale = locale.replace('-', '');
   const timestamp = dayjs().format('YYYY_MM_DD_HHmm');
   const filename = `CV_${normalizedLocale}_Cassio_dos_Santos_Sousa_${timestamp}.pdf`;
+
   const html = renderResumeHtml(data, resumeProjects, t);
 
   let browser;
@@ -43,18 +73,18 @@ export async function GET() {
       ? await import('puppeteer-core')
       : await import('puppeteer');
 
-    browser = await puppeteer.launch(
-      isVercel
-        ? {
-            args: chromium.args,
-            executablePath: await chromium.executablePath(),
-            headless: true,
-            timeout: 60000,
-          }
-        : {
-            headless: true,
-          },
-    );
+    const launchOptions = isVercel
+      ? {
+          args: chromium.args,
+          executablePath: await chromium.executablePath('/tmp/chromium'),
+          headless: true,
+          timeout: 60000,
+        }
+      : {
+          headless: true,
+        };
+
+    browser = await launchBrowserWithRetry(puppeteer, launchOptions);
 
     const page = await browser.newPage();
 

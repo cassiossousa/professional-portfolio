@@ -19,10 +19,13 @@
     "prettier": "prettier --write .",
     "prettier-check": "prettier --check .",
     "start": "next start",
+    "sync-projects": "node scripts/sync-github-projects.mjs",
     "test": "jest",
     "test-cov": "jest --coverage",
+    "ts-prune": "npx knip --include exports,types,nsExports,nsTypes",
+    "ts-unused-exports": "npx knip --include exports,types,nsExports,nsTypes",
     "tsc": "tsc --noEmit",
-    "sync-projects": "node scripts/sync-github-projects.mjs"
+    "unimported": "npx knip --production --dependencies --files"
   },
   "dependencies": {
     "@next/mdx": "16.1.6",

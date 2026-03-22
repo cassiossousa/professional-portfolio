@@ -2,8 +2,6 @@ export const locales = ['en', 'pt-BR'] as const;
 
 export type Locale = (typeof locales)[number];
 
-export const defaultLocale: Locale = 'en';
-
 // Define translation structure
 export interface Translation {
   home: {

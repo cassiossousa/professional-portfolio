@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 import { Translation } from '../types/i18n';
 
 const TranslationContext = createContext<Translation | null>(null);
@@ -17,10 +17,4 @@ export function TranslationProvider({
       {children}
     </TranslationContext.Provider>
   );
-}
-
-export function useMessages(): Translation {
-  const context = useContext(TranslationContext);
-  if (!context) throw new Error('TranslationProvider not found in tree');
-  return context;
 }
