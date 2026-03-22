@@ -1,4 +1,4 @@
-import { Locale, Translation } from './types';
+import { Locale, Translation } from '../types/i18n';
 import en from './locales/en';
 import ptBR from './locales/pt-BR';
 

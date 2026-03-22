@@ -1,7 +1,7 @@
 import { getAllEntries } from '../../lib/content';
 import { getDictionary } from '../../i18n/dictionaries';
 import { cookies } from 'next/headers';
-import { Locale } from '../../i18n/types';
+import { Locale } from '../../types/i18n';
 
 import { WorkClient } from './WorkClient';
 

@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import Link from 'next/link';
-import { Locale } from '../i18n/types';
+import { Locale } from '../types/i18n';
 import { getDictionary } from '../i18n/dictionaries';
 
 export default async function Footer() {

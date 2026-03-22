@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar';
 import { getDictionary } from '../i18n/dictionaries';
 import { TranslationProvider } from '../i18n/provider';
 import { cookies } from 'next/headers';
-import { Locale } from '../i18n/types';
+import { Locale } from '../types/i18n';
 import './globals.css';
 
 export const metadata: Metadata = {

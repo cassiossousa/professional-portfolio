@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { getProject } from '../../../lib/projects/getProjects';
 
-import type { Locale } from '../../../i18n/types';
+import type { Locale } from '../../../types/i18n';
 
 function Section({ title, items }: { title: string; items?: string[] }) {
   if (!items || items.length === 0) return null;
@@ -44,7 +44,7 @@ export default async function ProjectPage({
         )}
 
         {project.summary && (
-          <ul className="mt-4 list-disc list-inside">
+          <ul className="mt-4 list-disc list-inside space-y-1">
             {project.summary.map((bullet) => (
               <li key={bullet}>{bullet}</li>
             ))}
@@ -66,24 +66,30 @@ export default async function ProjectPage({
 
         <div className="mt-4 flex gap-6 text-sm">
           {project.repo && (
-            <a href={project.repo} target="_blank">
+            <a
+              href={project.repo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
               GitHub
             </a>
           )}
 
           {project.demo && (
-            <a href={project.demo} target="_blank">
+            <a
+              href={project.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
               Live Demo
             </a>
           )}
         </div>
       </header>
 
-      <Section title="Architecture" items={project.architecture} />
-
-      <Section title="Features" items={project.features} />
-
-      <Section title="Quality" items={project.quality} />
+      <Section title="Highlights" items={project.highlights} />
     </article>
   );
 }

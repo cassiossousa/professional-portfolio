@@ -1,4 +1,4 @@
-import { Translation } from '../../i18n/types';
+import { Translation } from '../../types/i18n';
 import { WorkRole } from '../work-experience/workModel';
 
 export interface ResumeData {

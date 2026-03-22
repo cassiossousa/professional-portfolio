@@ -10,7 +10,7 @@ function extractStack(repo: GitHubRepo): string[] {
 
   if (repo.topics) {
     for (const topic of repo.topics) {
-      if (!['featured', 'portfolio', 'demo'].includes(topic)) {
+      if (!['featured', 'portfolio', 'demo', 'resume'].includes(topic)) {
         stack.add(topic);
       }
     }
@@ -89,10 +89,11 @@ function parseReadme(readme?: string) {
       technologies?: string[];
       summary?: string[];
       highlights?: string[];
+      topics?: string[];
       featured?: boolean;
     };
 
-    let content = removeTopHeading(parsed.content.trim());
+    const content = removeTopHeading(parsed.content.trim());
 
     const techSection = getSection(content, 'Tech Stack');
 
@@ -111,13 +112,7 @@ function parseReadme(readme?: string) {
         data.highlights ??
         extractBullets(getSection(content, 'Architecture Highlights')),
 
-      architecture: extractBullets(
-        getSection(content, 'Architecture Highlights'),
-      ),
-
-      features: extractBullets(getSection(content, 'Key Features')),
-
-      quality: extractBullets(getSection(content, 'Quality')),
+      topics: data.topics,
 
       featured: data.featured,
     };
@@ -131,6 +126,8 @@ export function normalizeGithubRepo(
   readme?: string,
 ): Project {
   const parsed = parseReadme(readme);
+
+  const topics = parsed.topics ?? repo.topics ?? [];
 
   return {
     slug: repo.name,
@@ -151,12 +148,8 @@ export function normalizeGithubRepo(
 
     highlights: parsed.highlights,
 
-    architecture: parsed.architecture,
+    topics,
 
-    features: parsed.features,
-
-    quality: parsed.quality,
-
-    featured: parsed.featured ?? repo.topics?.includes('featured'),
+    featured: parsed.featured ?? topics.includes('featured'),
   };
 }

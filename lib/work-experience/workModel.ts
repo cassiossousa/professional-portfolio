@@ -1,5 +1,5 @@
 import { ContentEntry } from '../../types/content';
-import { Translation } from '../../i18n/types';
+import { Translation } from '../../types/i18n';
 
 export interface WorkRole {
   company: string;

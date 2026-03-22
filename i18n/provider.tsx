@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext } from 'react';
-import { Translation } from './types';
+import { Translation } from '../types/i18n';
 
 const TranslationContext = createContext<Translation | null>(null);
 

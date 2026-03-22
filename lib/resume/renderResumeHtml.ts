@@ -1,5 +1,5 @@
 import { ResumeData } from './renderResumeData';
-import { Translation } from '../../i18n/types';
+import { Translation } from '../../types/i18n';
 import { skills } from '../skills';
 import { Project } from '../../types/project';
 

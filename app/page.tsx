@@ -1,6 +1,6 @@
 import { getDictionary } from '../i18n/dictionaries';
 import { cookies } from 'next/headers';
-import { Locale } from '../i18n/types';
+import { Locale } from '../types/i18n';
 
 export default async function HomePage() {
   const cookieStore = await cookies();

@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import fs from 'fs/promises';
 import path from 'path';
 import matter from 'gray-matter';
@@ -49,9 +51,13 @@ async function clearProjects(dir) {
 
 async function run() {
   /** @type {GitHubRepo[]} */
-  const repos = await getRepos();
+  const repos = await getRepos(true);
 
-  const featured = repos.filter((repo) => repo.topics?.includes('featured'));
+  const featured = repos.filter(
+    (repo) =>
+      Boolean(repo.topics?.includes('featured') || repo.featured) ||
+      Boolean(repo.topics?.includes('resume')),
+  );
 
   const dir = path.join(process.cwd(), 'content/projects');
 
@@ -60,7 +66,7 @@ async function run() {
   await clearProjects(dir);
 
   for (const repo of featured) {
-    const readme = await getRepoReadme(repo.name);
+    const readme = await getRepoReadme(repo.name, true);
 
     let readmeContent = '';
     let readmeData = {};
@@ -92,6 +98,7 @@ async function run() {
       demo: project.demo,
       stars: project.stars,
       featured: project.featured,
+      topics: repo.topics ?? [],
 
       technologies: readmeData.technologies ?? extractedTechnologies,
 

@@ -2,6 +2,7 @@
   "name": "professional-portfolio",
   "private": true,
   "version": "0.0.1",
+  "type": "module",
   "author": {
     "name": "Cássio dos Santos Sousa"
   },
@@ -42,6 +43,7 @@
     "@types/node": "20.19.37",
     "@types/react": "18.3.28",
     "autoprefixer": "10.4.27",
+    "dotenv": "17.3.1",
     "eslint": "9.39.4",
     "eslint-config-next": "16.1.6",
     "eslint-config-prettier": "10.1.8",

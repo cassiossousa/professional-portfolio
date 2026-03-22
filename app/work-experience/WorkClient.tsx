@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Translation } from '../../i18n/types';
+import { Translation } from '../../types/i18n';
 import { WorkRole } from '../../lib/work-experience/workModel';
 
 interface WorkClientProps {

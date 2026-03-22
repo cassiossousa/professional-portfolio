@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 import LanguageSwitcher from './LanguageSwitcher';
-import { Translation } from '../i18n/types';
+import { Translation } from '../types/i18n';
 
 interface NavbarClientProps {
   t: Translation;

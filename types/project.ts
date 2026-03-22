@@ -13,11 +13,10 @@ export interface Project {
   technologies?: string[];
 
   summary?: string[];
+
   highlights?: string[];
 
-  architecture?: string[];
-  features?: string[];
-  quality?: string[];
+  topics?: string[];
 
   featured?: boolean;
 }

@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 
 import { getDictionary } from '../i18n/dictionaries';
-import { Locale } from '../i18n/types';
+import { Locale } from '../types/i18n';
 import NavbarClient from './NavbarClient';
 
 export default async function Navbar() {

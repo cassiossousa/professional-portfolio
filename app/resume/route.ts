@@ -10,7 +10,7 @@ import { getProjects } from '../../lib/projects/getProjects';
 import { renderResumeData } from '../../lib/resume/renderResumeData';
 import { renderResumeHtml } from '../../lib/resume/renderResumeHtml';
 
-import { Locale } from '../../i18n/types';
+import { Locale } from '../../types/i18n';
 import { mapContentToWorkRoles } from '../../lib/work-experience/workModel';
 import dayjs from 'dayjs';
 
@@ -25,13 +25,14 @@ export async function GET() {
   const entries = await getAllEntries('work-experience', locale);
   const roles = mapContentToWorkRoles(entries, t);
   const projects = await getProjects(locale);
+  const resumeProjects = projects.filter((p) => p.topics?.includes('resume'));
   const data = renderResumeData(roles, t);
 
   // Generate timestamp up to minutes
   const normalizedLocale = locale.replace('-', '');
   const timestamp = dayjs().format('YYYY_MM_DD_HHmm');
   const filename = `CV_${normalizedLocale}_Cassio_dos_Santos_Sousa_${timestamp}.pdf`;
-  const html = renderResumeHtml(data, projects, t);
+  const html = renderResumeHtml(data, resumeProjects, t);
 
   let browser;
 

@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { getProjects } from '../../lib/projects/getProjects';
 import { getDictionary } from '../../i18n/dictionaries';
 
-import type { Locale, Translation } from '../../i18n/types';
+import { Locale, Translation } from '../../types/i18n';
 import type { Project } from '../../types/project';
 
 export default async function ProjectsPage() {
@@ -14,13 +14,18 @@ export default async function ProjectsPage() {
   const t: Translation = await getDictionary(locale);
 
   const projects: Project[] = await getProjects(locale);
+  const featuredProjects = projects.filter(
+    (p) =>
+      Boolean(p.topics?.includes('featured') || p.featured) ||
+      Boolean(p.topics?.includes('resume')),
+  );
 
   return (
     <section className="container-main">
       <h1 className="text-3xl font-bold mb-8">{t.projects.title}</h1>
 
       <div className="grid md:grid-cols-2 gap-6">
-        {projects.map((project) => (
+        {featuredProjects.map((project) => (
           <article key={project.slug} className="card">
             <Link
               href={`/projects/${project.slug}`}

@@ -1,4 +1,4 @@
-import { defineMessages, Translation, yearsSince } from '../types';
+import { defineMessages, Translation, yearsSince } from '../../types/i18n';
 
 const pt: Translation = {
   home: {
