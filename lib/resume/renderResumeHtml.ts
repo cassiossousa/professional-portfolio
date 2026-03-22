@@ -20,6 +20,7 @@ function renderProjects(
     technologies?: string[];
     summary?: string[];
     repo?: string;
+    demo?: string;
   }[],
 ) {
   if (!projects?.length) return '';
@@ -43,6 +44,16 @@ function renderProjects(
                 : ''
             }
           </div>
+
+          ${
+            p.repo || p.demo
+              ? `<div class="links">
+                ${p.repo ? `<a href="${escapeHtml(p.repo)}">GitHub</a>` : ''}
+                ${p.repo && p.demo ? `<span class="separator">•</span>` : ''}
+                ${p.demo ? `<a href="${escapeHtml(p.demo)}">Demo</a>` : ''}
+              </div>`
+              : ''
+          }
         </div>
 
         ${
@@ -50,7 +61,7 @@ function renderProjects(
             ? `
         <ul>
           ${p.summary
-            .slice(0, 2)
+            .slice(0, 3)
             .map((s) => `<li>${escapeHtml(s)}</li>`)
             .join('')}
         </ul>
@@ -103,6 +114,14 @@ export function renderResumeHtml(
     )
     .join('');
 
+  const languagesHtml = Object.values(t.resume.languages)
+    .map(
+      (lang) => `
+        <li>${escapeHtml(lang)}</li>
+      `,
+    )
+    .join('');
+
   const contacts = [
     `<a href="https://github.com/${escapeHtml(t.home.username)}">github.com/${escapeHtml(
       t.home.username,
@@ -123,26 +142,36 @@ export function renderResumeHtml(
     <style>
       body{
         font-family: system-ui;
-        margin: 30px 20px;font-size:13px;line-height:1.5}
+        margin: 30px 20px;
+        font-size:13px;
+        line-height:1.5;
+        color:#222
+      }
       
       .resume-header {
         text-align: center;
-        margin-bottom: 18px;
+        margin-bottom: 20px;
       }
       
       h1{
         font-size:28px;
         margin-bottom:4px;
+        letter-spacing:-0.2px
       }
       
       .headline{
         font-size:14px;
         font-weight:500;
         margin-bottom:6px;
+        color:#333
       }
       
       .contact{
         font-size:12px;
+      }
+      
+      .contact a {
+        color:#000
       }
       
       .separator{
@@ -152,29 +181,53 @@ export function renderResumeHtml(
       
       h2{
         margin-top:24px;
-        font-size:18px;
+        margin-bottom:8px;
+        font-size:17px;
+        border-bottom:1px solid #ddd;
+        padding-bottom:2px
       }
       
       .role{
         margin-bottom:14px;
       }
       
+      .role-header{
+        margin-bottom:4px
+      }
+      
+      .company{
+        margin:0;
+        font-size:14px
+      }
+      
       .title{
         font-weight:600;
+        font-size:13px
       }
       
       .meta{
         font-size:12px;
-        color:#555;
+        color:#666;
+      }
+      
+      .links{
+        font-size: 11px;
+        font-weight: 600;
+        margin-top: 2px
+      }
+      
+      .links a{
+        color:#000
       }
       
       ul{
         margin:6px 0 0 0;
-        padding-left:24px;
+        padding-left: 22px;
       }
       
       li{
         font-size:12px;
+        margin-bottom:2px
       }
       
       .tech{
@@ -206,8 +259,12 @@ export function renderResumeHtml(
     ${rolesHtml}
 
     ${renderProjects(projects)}
+
     <h2>${escapeHtml(t.skills.title)}</h2>
     <ul>${skillsHtml}</ul>
+
+    <h2>${escapeHtml(t.resume.languagesTitle)}</h2>
+    <ul>${languagesHtml}</ul>
   </body>
 </html>
 `;

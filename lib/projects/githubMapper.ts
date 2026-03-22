@@ -19,46 +19,62 @@ function extractStack(repo: GitHubRepo): string[] {
   return [...stack];
 }
 
+function getSection(content: string, title: string): string | undefined {
+  const regex = new RegExp(`## ${title}[\\s\\S]*?(?=\\n## |$)`, 'i');
+  const match = content.match(regex);
+
+  if (!match) return;
+
+  return match[0];
+}
+
+function extractBullets(section?: string): string[] | undefined {
+  if (!section) return;
+
+  const bullets = [...section.matchAll(/^- (.*)/gm)];
+
+  if (!bullets.length) return;
+
+  return bullets.map((b) => b[1].trim());
+}
+
+function extractTechnologies(section?: string): string[] | undefined {
+  if (!section) return;
+
+  const bullets = [...section.matchAll(/^- (.*)/gm)];
+
+  if (!bullets.length) return;
+
+  return bullets.map((b) =>
+    b[1].replace(/\*\*/g, '').replace(/:.*/, '').trim(),
+  );
+}
+
 function removeTopHeading(markdown: string): string {
   const lines = markdown.split('\n');
 
-  let firstContentIndex = 0;
+  let i = 0;
 
-  while (
-    firstContentIndex < lines.length &&
-    lines[firstContentIndex].trim() === ''
-  ) {
-    firstContentIndex++;
-  }
+  while (i < lines.length && lines[i].trim() === '') i++;
 
-  if (lines[firstContentIndex]?.startsWith('# ')) {
-    lines.splice(firstContentIndex, 1);
+  if (lines[i]?.startsWith('# ')) {
+    lines.splice(i, 1);
   }
 
   return lines.join('\n').trim();
 }
 
-function extractSection(markdown: string, title: string): string[] | undefined {
-  const regex = new RegExp(`##\\s+${title}[\\s\\S]*?(?=\\n##\\s|$)`, 'i');
+function extractDescription(content: string): string | undefined {
+  const lines = content.split('\n');
 
-  const match = markdown.match(regex);
-  if (!match) return undefined;
+  for (const line of lines) {
+    const trimmed = line.trim();
 
-  const bullets = [...match[0].matchAll(/^- (.*)/gm)];
+    if (!trimmed) continue;
+    if (trimmed.startsWith('## ')) break;
 
-  if (!bullets.length) return undefined;
-
-  return bullets.map((b) => b[1].trim());
-}
-
-function extractTechnologies(markdown: string): string[] | undefined {
-  const stack = extractSection(markdown, 'Tech Stack');
-
-  if (!stack) return undefined;
-
-  return stack.map((line) =>
-    line.replace(/\*\*/g, '').replace(/:.*/, '').trim(),
-  );
+    return trimmed;
+  }
 }
 
 function parseReadme(readme?: string) {
@@ -76,27 +92,34 @@ function parseReadme(readme?: string) {
       featured?: boolean;
     };
 
-    let content = parsed.content.trim();
+    let content = removeTopHeading(parsed.content.trim());
 
-    content = removeTopHeading(content);
-
-    const extractedSummary =
-      data.summary ?? extractSection(content, 'Project Summary');
-
-    const extractedHighlights =
-      data.highlights ?? extractSection(content, 'Architecture Highlights');
-
-    const extractedTechnologies =
-      data.technologies ?? extractTechnologies(content);
+    const techSection = getSection(content, 'Tech Stack');
 
     return {
       title: data.title,
       demo: data.demo,
-      technologies: extractedTechnologies,
-      summary: extractedSummary,
-      highlights: extractedHighlights,
+
+      description: extractDescription(content),
+
+      technologies: data.technologies ?? extractTechnologies(techSection),
+
+      summary:
+        data.summary ?? extractBullets(getSection(content, 'Project Summary')),
+
+      highlights:
+        data.highlights ??
+        extractBullets(getSection(content, 'Architecture Highlights')),
+
+      architecture: extractBullets(
+        getSection(content, 'Architecture Highlights'),
+      ),
+
+      features: extractBullets(getSection(content, 'Key Features')),
+
+      quality: extractBullets(getSection(content, 'Quality')),
+
       featured: data.featured,
-      description: content,
     };
   } catch {
     return {};
@@ -120,7 +143,7 @@ export function normalizeGithubRepo(
 
     demo: parsed.demo ?? repo.homepage ?? undefined,
 
-    stars: repo.stargazers_count > 0 ? repo.stargazers_count : undefined,
+    stars: repo.stargazers_count || undefined,
 
     technologies: parsed.technologies ?? extractStack(repo),
 
@@ -128,8 +151,12 @@ export function normalizeGithubRepo(
 
     highlights: parsed.highlights,
 
-    featured: parsed.featured ?? repo.topics?.includes('featured'),
+    architecture: parsed.architecture,
 
-    readme,
+    features: parsed.features,
+
+    quality: parsed.quality,
+
+    featured: parsed.featured ?? repo.topics?.includes('featured'),
   };
 }

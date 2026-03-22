@@ -1,5 +1,6 @@
 export interface Project {
   slug: string;
+
   title: string;
 
   description?: string;
@@ -10,10 +11,13 @@ export interface Project {
   stars?: number;
 
   technologies?: string[];
+
   summary?: string[];
   highlights?: string[];
 
-  featured?: boolean;
+  architecture?: string[];
+  features?: string[];
+  quality?: string[];
 
-  readme?: string;
+  featured?: boolean;
 }

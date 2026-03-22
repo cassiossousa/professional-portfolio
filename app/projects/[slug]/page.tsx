@@ -1,11 +1,25 @@
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 
-import ReactMarkdown from 'react-markdown';
-
 import { getProject } from '../../../lib/projects/getProjects';
 
 import type { Locale } from '../../../i18n/types';
+
+function Section({ title, items }: { title: string; items?: string[] }) {
+  if (!items || items.length === 0) return null;
+
+  return (
+    <section className="mt-10">
+      <h2 className="text-xl font-semibold mb-3">{title}</h2>
+
+      <ul className="list-disc list-inside space-y-1">
+        {items.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    </section>
+  );
+}
 
 export default async function ProjectPage({
   params,
@@ -21,9 +35,13 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   return (
-    <article className="container-main prose dark:prose-invert max-w-3xl">
-      <header className="mb-8">
-        <h1>{project.title}</h1>
+    <article className="container-main max-w-3xl">
+      <header className="mb-10">
+        <h1 className="text-3xl font-bold">{project.title}</h1>
+
+        {project.description && (
+          <p className="mt-3 text-lg">{project.description}</p>
+        )}
 
         {project.summary && (
           <ul className="mt-4 list-disc list-inside">
@@ -47,39 +65,25 @@ export default async function ProjectPage({
         )}
 
         <div className="mt-4 flex gap-6 text-sm">
-          {project.stars && <span>⭐ {project.stars}</span>}
-
           {project.repo && (
-            <a href={project.repo} target="_blank" rel="noopener noreferrer">
-              View on GitHub
+            <a href={project.repo} target="_blank">
+              GitHub
             </a>
           )}
 
           {project.demo && (
-            <a href={project.demo} target="_blank" rel="noopener noreferrer">
+            <a href={project.demo} target="_blank">
               Live Demo
             </a>
           )}
         </div>
       </header>
 
-      {project.highlights && (
-        <section className="mb-8">
-          <h2>Highlights</h2>
+      <Section title="Architecture" items={project.architecture} />
 
-          <ul>
-            {project.highlights.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <Section title="Features" items={project.features} />
 
-      {project.description && (
-        <section>
-          <ReactMarkdown>{project.description}</ReactMarkdown>
-        </section>
-      )}
+      <Section title="Quality" items={project.quality} />
     </article>
   );
 }
