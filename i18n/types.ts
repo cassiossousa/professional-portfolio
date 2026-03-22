@@ -16,7 +16,6 @@ export interface Translation {
   workExperience: {
     title: string;
     present: string;
-    previewResume: string;
   };
 
   skills: {

@@ -29,11 +29,17 @@ export default async function ProjectsPage() {
               {project.title}
             </Link>
 
-            <p className="mt-2">{project.description}</p>
+            {project.summary && (
+              <ul className="mt-3 list-disc list-inside text-sm">
+                {project.summary.slice(0, 3).map((bullet) => (
+                  <li key={bullet}>{bullet}</li>
+                ))}
+              </ul>
+            )}
 
-            {project.stack && project.stack.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-2">
-                {project.stack.map((tech) => (
+            {project.technologies && project.technologies.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {project.technologies.map((tech) => (
                   <span
                     key={tech}
                     className="text-xs px-2 py-1 bg-neutral-200 dark:bg-neutral-700 rounded"
@@ -45,9 +51,7 @@ export default async function ProjectsPage() {
             )}
 
             <div className="mt-3 flex gap-4 text-sm">
-              {project.stars && project.stars > 0 && (
-                <span>⭐ {project.stars}</span>
-              )}
+              {project.stars && <span>⭐ {project.stars}</span>}
 
               {project.repo && (
                 <a href={project.repo} target="_blank">

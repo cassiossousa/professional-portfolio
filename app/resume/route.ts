@@ -5,6 +5,7 @@ import chromium from '@sparticuz/chromium';
 
 import { getAllEntries } from '../../lib/content';
 import { getDictionary } from '../../i18n/dictionaries';
+import { getProjects } from '../../lib/projects/getProjects';
 
 import { renderResumeData } from '../../lib/resume/renderResumeData';
 import { renderResumeHtml } from '../../lib/resume/renderResumeHtml';
@@ -23,14 +24,14 @@ export async function GET() {
   const t = await getDictionary(locale);
   const entries = await getAllEntries('work-experience', locale);
   const roles = mapContentToWorkRoles(entries, t);
-
+  const projects = await getProjects(locale);
   const data = renderResumeData(roles, t);
 
   // Generate timestamp up to minutes
   const normalizedLocale = locale.replace('-', '');
   const timestamp = dayjs().format('YYYY_MM_DD_HHmm');
   const filename = `CV_${normalizedLocale}_Cassio_dos_Santos_Sousa_${timestamp}.pdf`;
-  const html = renderResumeHtml(data, t);
+  const html = renderResumeHtml(data, projects, t);
 
   let browser;
 

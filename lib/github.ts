@@ -43,5 +43,5 @@ export async function getRepoReadme(
 
   const text: string = await res.text();
 
-  return text.split('\n').slice(0, 10).join('\n');
+  return text;
 }

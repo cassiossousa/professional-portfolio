@@ -11,7 +11,6 @@ const en: Translation = {
   workExperience: {
     title: 'Work Experience',
     present: 'Present',
-    previewResume: 'Preview Resume (PDF)',
   },
 
   skills: {

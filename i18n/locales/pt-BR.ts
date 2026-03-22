@@ -10,8 +10,7 @@ const pt: Translation = {
 
   workExperience: {
     title: 'Experiência Profissional',
-    present: 'Atual',
-    previewResume: 'Visualizar Currículo (PDF)',
+    present: 'Presente',
   },
 
   skills: {

@@ -5,7 +5,7 @@ import type { Locale } from '../../i18n/types';
 import type { Project } from '../../types/project';
 import type { ProjectEntry } from '../../types/content';
 
-import { normalizeGithubRepo } from './githubProject';
+import { normalizeGithubRepo } from './githubMapper';
 
 function fromProjectEntry(entry: ProjectEntry): Project {
   return {
@@ -15,7 +15,9 @@ function fromProjectEntry(entry: ProjectEntry): Project {
     repo: entry.frontmatter.repo,
     demo: entry.frontmatter.demo,
     stars: entry.frontmatter.stars,
-    stack: entry.frontmatter.stack,
+    technologies: entry.frontmatter.technologies,
+    summary: entry.frontmatter.summary,
+    highlights: entry.frontmatter.highlights,
   };
 }
 
@@ -26,11 +28,20 @@ export async function getProjects(locale: Locale): Promise<Project[]> {
     const featured = repos.filter((r) => r.topics?.includes('featured'));
 
     if (featured.length) {
-      return featured.map(normalizeGithubRepo);
+      const projects = await Promise.all(
+        featured.map(async (repo) => {
+          const readme = await getRepoReadme(repo.name);
+
+          return normalizeGithubRepo(repo, readme ?? undefined);
+        }),
+      );
+
+      return projects;
     }
   }
 
   const entries = (await getAllEntries('projects', locale)) as ProjectEntry[];
+
   return entries.map(fromProjectEntry);
 }
 
@@ -44,10 +55,9 @@ export async function getProject(
     const repo = repos.find((r) => r.name === slug);
 
     if (repo) {
-      const project = normalizeGithubRepo(repo);
       const readme = await getRepoReadme(repo.name);
-      if (readme) project.readme = readme;
-      return project;
+
+      return normalizeGithubRepo(repo, readme ?? undefined);
     }
   }
 
