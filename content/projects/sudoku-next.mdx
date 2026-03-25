@@ -9,65 +9,206 @@ technologies:
   - Next.js
   - TypeScript
   - React
+  - Tailwind CSS
+  - Jest
 summary:
-  - Sudoku web application built with Next.js and TypeScript
-  - Implements Sudoku board logic and puzzle validation
-  - Demonstrates interactive UI development with React
+  - Advanced Sudoku web application with dual solving algorithms
+  - Implements single-guess and backtracking solvers with step tracking
+  - Type-safe architecture with comprehensive test coverage
 highlights:
-  - Puzzle generation
-  - Sudoku validation logic
-  - Responsive UI
+  - Dual solving algorithms (single-guess & backtracking)
+  - Complete TypeScript implementation with interfaces
+  - Comprehensive Jest test suite
+  - Solver step tracking and visualization
+  - Algorithm performance optimization
 category: frontend
 ---
 
 # Sudoku Next
 
-Interactive Sudoku web application built with Next.js and TypeScript.
+A sophisticated Sudoku web application built with Next.js and TypeScript, featuring advanced solving algorithms and a clean, interactive interface.
 
-## Project Summary
+## Overview
 
-- Built a Sudoku puzzle interface using Next.js and React.
-- Implemented Sudoku validation logic for checking puzzle correctness.
-- Developed responsive UI interactions for puzzle gameplay.
+This project implements a fully-featured Sudoku game with two powerful solving algorithms:
+
+- **Single-Guess Solver**: Efficiently solves puzzles by filling cells with only one possible value
+- **Backtracking Solver**: A comprehensive brute-force algorithm that can solve any valid Sudoku puzzle, including those with multiple solutions
+
+The application demonstrates advanced TypeScript patterns, algorithmic thinking, and modern React development practices.
+
+## Features
+
+- **Interactive Sudoku Board**: 9x9 grid with proper 3x3 box segmentation
+- **Dual Solving Algorithms**:
+  - Fast single-guess solving for easy puzzles
+  - Complete backtracking algorithm for complex puzzles
+- **Type-Safe Architecture**: Full TypeScript implementation with interfaces and classes
+- **Comprehensive Testing**: Jest test suite covering core functionality
+- **Responsive Design**: Clean UI with Tailwind CSS styling
+- **Solver Step Tracking**: Detailed logging of solving process
 
 ## Tech Stack
 
-### Core
+### Core Framework
 
-- Next.js
-- React
-- TypeScript
+- **Next.js 16.2.1** - React framework with App Router
+- **React 19.2.3** - UI library
+- **TypeScript 5** - Type-safe JavaScript
 
-### Tooling
+### Styling & UI
 
-- ESLint
-- Prettier
+- **Tailwind CSS 4** - Utility-first CSS framework
+- **Geist Fonts** - Modern typography from Vercel
 
-## Architecture Highlights
+### Development & Testing
 
-- Client-side state management for puzzle board updates.
-- Component-based UI architecture using React.
-- Puzzle validation logic separated from UI rendering.
+- **Jest 30.2.0** - Testing framework
+- **React Testing Library** - Component testing utilities
+- **ESLint 9** - Code linting and formatting
+- **PostCSS** - CSS processing
 
-## Key Features
+## Architecture
 
-- Interactive Sudoku board
-- Puzzle validation
-- Responsive layout
+### Core Components
 
-## Quality
+#### Sudoku Engine (`app/sudoku/`)
 
-- Type-safe codebase using TypeScript
-- Linting with ESLint
-- Consistent formatting with Prettier
+- `SudokuGridCell`: Individual cell implementation with value management
+- `SudokuGrid`: Main grid class with validation and solving capabilities
+- Interfaces for type safety: `IGridCell`, `IGrid`
+
+#### Solving Algorithms (`app/solver/`)
+
+- `single-guess.tsx`: Optimized solver for cells with single possible values
+- `backtracking.tsx`: Comprehensive recursive backtracking algorithm
+- `step.tsx`: Step tracking for solver visualization
+- Comprehensive test suites for both algorithms
+
+#### UI Components (`app/components/`)
+
+- `sudoku-game.tsx`: Main game component with grid rendering
+- `sudoku-game-cell.tsx`: Interactive cell component
+- `sudoku-game-cell-initial.tsx`: Read-only component for initial values
+
+### Algorithm Details
+
+#### Single-Guess Solver
+
+- Iteratively fills cells with only one possible value
+- Optimizes other solving algorithms by reducing complexity
+- Returns solving steps for tracking
+
+#### Backtracking Solver
+
+- Recursive brute-force approach with optimizations
+- Handles puzzles with multiple solutions
+- Complexity: O(exp(N)) where N is the number of empty cells
+- Includes detailed documentation on algorithmic approach
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (version 18 or higher recommended)
+- npm or yarn package manager
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/cassiossousa/sudoku-next.git
+cd sudoku-next
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+
+## Available Scripts
+
+```bash
+# Development
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+
+# Testing
+npm run test         # Run tests once
+npm run test:watch   # Run tests in watch mode
+
+# Code Quality
+npm run lint         # Run ESLint
+npm run lint-fix     # Fix ESLint issues automatically
+```
+
+## Project Structure
+
+```
+sudoku-next/
+├── app/
+│   ├── components/          # React UI components
+│   │   ├── sudoku-game.tsx
+│   │   ├── sudoku-game-cell.tsx
+│   │   └── sudoku-game-cell-initial.tsx
+│   ├── solver/              # Solving algorithms
+│   │   ├── backtracking.tsx
+│   │   ├── single-guess.tsx
+│   │   ├── step.tsx
+│   │   └── [test files]
+│   ├── sudoku/              # Core Sudoku logic
+│   │   ├── sudoku.tsx
+│   │   └── sudoku.spec.ts
+│   ├── globals.css          # Global styles
+│   ├── layout.tsx           # Root layout
+│   └── page.tsx             # Home page
+├── public/                  # Static assets
+├── [config files]           # TypeScript, Jest, ESLint configs
+└── package.json
+```
+
+## Testing
+
+The project includes comprehensive test coverage:
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode during development
+npm run test:watch
+```
+
+Test suites cover:
+
+- Sudoku grid functionality
+- Single-guess solver algorithm
+- Backtracking solver algorithm
+- Edge cases and error handling
+
+## Algorithm Performance
+
+- **Easy puzzles** (single-guess solvable): < 1 second
+- **Medium puzzles**: Few seconds with backtracking
+- **Hard puzzles** (17 clues, single solution): Few minutes
+- **Very complex puzzles**: May take hours or more (multiple solutions)
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
 
 ## Repository
 
 https://github.com/cassiossousa/sudoku-next
-
-## Development
-
-```bash
-npm install
-npm run dev
-```
