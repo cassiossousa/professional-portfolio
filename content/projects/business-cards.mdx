@@ -1,0 +1,170 @@
+---
+title: business-cards
+repo: 'https://github.com/cassiossousa/business-cards'
+demo: 'https://business-cards-eta.vercel.app/'
+featured: true
+topics:
+  - featured
+  - resume
+technologies:
+  - React
+  - TypeScript
+  - Mantine
+  - Vite
+  - Zustand
+  - QRCode
+  - Vitest
+summary:
+  - Mobile-first business card editor with an interactive live preview
+  - Edit or hide template-declared card fields without losing saved content
+  - Create square QR cards with social logos and background-aware contrast
+  - Keep template-specific designs in this browser and print cards or save PDFs
+highlights:
+  - Directly edit text in the live card preview
+  - >-
+    Two-sided card designs and selectable templates, including Color-block
+    Studio
+  - >-
+    QR code generation with editable captions, social logos, and contrast-safe
+    colors
+  - Local template drafts and A4 print sheets with aligned duplex pages
+  - Responsive interface with unit-tested design and editor logic
+category: frontend
+---
+# Business Card Studio
+
+A mobile-first business card editor built with React and TypeScript. Add your details, choose a template, customize the design, and see changes immediately in the live preview.
+
+## Overview
+
+Business Card Studio combines an interactive card preview with focused design controls. Create a two-sided card with personal and contact details, or choose the QR Code template to make a square card linking to a web address.
+
+## Features
+
+- **Live card editing**: Click visible text in the preview to edit it, or use the design panel.
+- **Validated contact details**: Website addresses and phone numbers are checked in the editor and live preview.
+- **Multiple templates**: Choose Simple, Simple Mono, Color-block Studio, or QR Code designs.
+- **Two-sided cards**: Edit the front and back independently on templates that support both sides.
+- **Custom dimensions**: Set card width and height in millimeters or inches.
+- **Personalized design**: Adjust background, foreground, and accent colors.
+- **Readable color pairs**: Validate text/background contrast on both sides of every template and block print output when the selected side fails its contrast requirement.
+- **Social links**: Add up to three platform-validated usernames on supported templates; profile URLs are generated automatically.
+- **Field visibility**: Hide optional template fields from the card while keeping their content available to restore later.
+- **QR Code cards**: Generate a scannable QR code from a web URL, customize its caption and color, and automatically detect or manually choose a social platform logo. QR and caption colors maintain at least 7:1 contrast against the chosen background.
+- **Saved designs**: Your edits are saved in this browser separately for each template.
+- **Print and PDF export**: Print the front, back, or both sides one card per A4 page, or fit multiple cards onto A4. Duplex pages use the same layout; choose 100% scale, enable background graphics, and flip on the long edge. Printer feed alignment can vary, so review the PDF before printing. Use the browser print dialog’s **Save as PDF** option to export.
+- **Responsive interface**: Design controls and previews adapt to mobile and desktop screens.
+
+## Tech Stack
+
+### Core
+
+- **React 19** - Component-based user interface
+- **TypeScript 6** - Typed application and design models
+- **Vite 8** - Development server and production build
+
+### UI and State
+
+- **Mantine 9** - UI components and theming
+- **Zustand 5** - Editor document and interaction state
+
+### QR Codes and Quality
+
+- **qrcode** - Client-side QR code image generation
+- **Vitest 5** - Unit and component tests
+- **Testing Library** - React component testing
+- **ESLint 10** - Code linting
+- **Prettier 3** - Code formatting, enforced in CI and by a Husky + lint-staged pre-commit hook
+
+## Architecture Highlights
+
+- Card content, dimensions, and per-side design settings are modeled as a typed card document.
+- A Zustand store coordinates runtime editor state while framework-independent project operations manage template drafts and template-specific editing rules.
+- Browser-local drafts use a versioned schema, with legacy data migrations and backward-compatible restoration behind the project storage boundary.
+- A shared card renderer serves both the interactive preview and print output; print geometry stays framework-independent in the printing core.
+- Templates declare their capabilities, such as support for a back side, social links, or QR codes.
+- Each template side declares its editable fields and display labels; hidden-field state is retained independently from card content.
+- Social username validation and profile URL generation live in the framework-independent design core.
+- Website and phone input validation is shared by editor controls and direct preview editing.
+- Shared color-contrast validation covers all template-side defaults and edited appearance colors; QR cards retain a stricter 7:1 threshold.
+- The preview renders the active card side and supports direct editing through reusable editable text controls.
+- Print layout calculations are framework-agnostic; the print UI creates single-card pages and position-matched A4 sheets for duplex output.
+- QR code helpers normalize and validate web URLs, detect supported social domains, and enforce a minimum 7:1 contrast ratio between the QR/text color and the selected card background.
+- CI enforces per-chunk JavaScript and aggregate gzip budgets during the production build.
+
+## Project Structure
+
+```text
+src/
+├── app/                 # Application entry point and global styles
+├── catalog/templates/   # Template definitions, types, and capabilities
+├── core/
+│   ├── design/          # Design/card document types and validation
+│   ├── editor/          # Framework-independent editor operations
+│   ├── elements/        # Design-element types used by the design model
+│   ├── printing/        # Framework-independent physical print layout
+│   └── qr/              # QR code generation and URL/platform helpers
+├── projects/
+│   ├── model/           # Project model types
+│   ├── operations/      # Draft operations and schema migrations
+│   └── storage/         # Browser-local persistence adapters
+├── state/               # Zustand runtime editor state and mutation orchestration
+└── ui/
+    ├── components/      # Reusable editor components
+    │   └── card/        # Shared card surface, content, and QR rendering
+    ├── editor/          # Template picker and design controls
+    ├── pages/           # Editor page
+    ├── preview/         # Business card and QR code previews
+    ├── print/           # Print/PDF controls and print styles
+    ├── test/            # Shared UI test-rendering helpers
+    └── theme.ts         # Mantine theme
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- npm
+
+### Installation
+
+```bash
+git clone https://github.com/cassiossousa/business-cards.git
+cd business-cards
+npm install
+npm run dev
+```
+
+Open the local URL printed by Vite to use the editor.
+
+## Available Scripts
+
+```bash
+npm run dev        # Start the development server
+npm run build      # Build the production app
+npm run preview    # Preview the production build locally
+npm run lint       # Run ESLint
+npm run prettier   # Format files with Prettier
+npm run prettier:check # Check formatting (CI)
+npm run tsc        # Check TypeScript types
+npm test           # Run tests once
+npm run test:cov   # Run tests with coverage
+npm run test:watch # Run tests in watch mode with coverage
+```
+
+## Testing
+
+The test suite covers the card design model, template catalog, editor state, QR code helpers, and React editor and preview components. Run the suite with:
+
+```bash
+npm test
+```
+
+## Demo
+
+https://business-cards-eta.vercel.app/
+
+## Repository
+
+https://github.com/cassiossousa/business-cards

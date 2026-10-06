@@ -5,12 +5,14 @@ const USERNAME = process.env.GITHUB_USERNAME;
 const TOKEN = process.env.GITHUB_TOKEN;
 const FAIL_RATE = 0.2;
 
+if (!TOKEN) {
+  throw new Error('Missing GITHUB_TOKEN');
+}
+
 const headers: HeadersInit = {
   Accept: 'application/vnd.github+json',
   'User-Agent': 'portfolio-sync',
-  ...(TOKEN && {
-    Authorization: `token ${TOKEN}`,
-  }),
+  Authorization: `Bearer ${TOKEN}`,
 };
 
 function simulateFailure() {
